@@ -1,3 +1,7 @@
 # Midi_Midi
 
-Editing
+Todd Bensmiller
+Anthony Carr
+Cameron Donner
+Joshua Garrett
+Ephraim Jackson
