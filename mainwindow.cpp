@@ -1,9 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "audioconstants.h"
 
-#define SAMPLE_RATE 44100.0f
-#define TG_MAX_VAL 126
-#define FREQ_CONST ((2.0 * M_PI) / SAMPLE_RATE)
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,44 +19,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_pressed()
 {
-    //----------------------------Generate the tone---------------------------
-    float seconds =1.0f; // how long we want to play our tone
-    float freq = 440.0f; // what freq we want to play our tone this is key A4
 
-    QByteArray* bytebuf = new QByteArray();
-    bytebuf->resize(seconds * SAMPLE_RATE);
-    // sin(2 * pi * frequency * i / sample_rate) will give you a sin tone of the desired frequency, i being an offset
+    //play C Major
+    tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
 
-    for (int i=0; i<(seconds * SAMPLE_RATE); i++) {
-        double freqOffset = (double)(freq * i); // frequency *i
-        freqOffset = freqOffset * FREQ_CONST; // (frequency *i)*((2.0 * M_PI) / SAMPLE_RATE)
-        freqOffset = qSin(freqOffset); // sin((frequency *i)*((2.0 * M_PI) / SAMPLE_RATE))
-        freqOffset *= TG_MAX_VAL; // now we normalize freqOffset
-        (*bytebuf)[i] = (quint8)freqOffset; // stuff that tone into the a byte array, one byte at a time
-    }
-    //--------------------------------Generate the tone-------------------
+    tone* Tone1 = toneGenerator.MakeTone(329.63f,1.0f,0.3f);// E4
+
+    tone* Tone2 = toneGenerator.MakeTone(392.0f,1.0f,0.3f); //G4
+
+    toneGenerator.PlayTone(Tone);
+    toneGenerator.PlayTone(Tone1);
+    toneGenerator.PlayTone(Tone2);
 
 
-    //--------------------------------Play a sound -----------------------
-    QAudioFormat format;
-    // Set up the format, so that QT knows how to play our tones on our machine
-    format.setSampleRate(SAMPLE_RATE);
-    format.setChannelCount(1);
-    format.setSampleSize(8);
-    format.setCodec("audio/pcm");
-    format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::UnSignedInt);
-
-
-    // Make a QBuffer from our QByteArray
-    QBuffer* input = new QBuffer(bytebuf);
-    input->open(QIODevice::ReadOnly);
-
-    // Create an output with our premade QAudioFormat (See example in QAudioOutput)
-    QAudioOutput* audio = new QAudioOutput(format);
-    audio->start(input);
-
-    //this is standerd setup for playing sound in QT, ripped of QT website
-
-    //-------------------------------Play a sound ----------------------------
 }
