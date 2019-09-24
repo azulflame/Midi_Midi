@@ -30,12 +30,15 @@ public:
     double volume = 0.3;
     float seconds = 1.0f;
     ToneGen toneGenerator;
+    void start(QIODevice *device);
+    QIODevice *device;
 
 private slots:
     void on_pushButton_pressed();
 
 private:
     Ui::MainWindow *ui;
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H
