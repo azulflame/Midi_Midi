@@ -11,11 +11,9 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QWidget>
+#include "tonegen.h"
 
-#define SPD_SAMPLE_RATE     8000
-#define SPD_FREQ_CONST      ((2.0 * M_PI) / (qreal)SPD_SAMPLE_RATE)
-#define SPD_SAMPLE_SIZE     8
-#define SPD_CODEC           "audio/pcm"
+
 
 namespace Ui {
 class MainWindow;
@@ -28,12 +26,19 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    float freq = 440.0f;
+    double volume = 0.3;
+    float seconds = 1.0f;
+    ToneGen toneGenerator;
+    void start(QIODevice *device);
+    QIODevice *device;
 
 private slots:
     void on_pushButton_pressed();
 
 private:
     Ui::MainWindow *ui;
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

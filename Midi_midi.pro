@@ -29,10 +29,13 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        tonegen.cpp
 
 HEADERS += \
-        mainwindow.h
+        audioconstants.h \
+        mainwindow.h \
+        tonegen.h
 
 FORMS += \
         mainwindow.ui
