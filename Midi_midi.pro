@@ -30,11 +30,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+        note.cpp \
         tonegen.cpp
 
 HEADERS += \
         audioconstants.h \
         mainwindow.h \
+        note.h \
         tonegen.h
 
 FORMS += \

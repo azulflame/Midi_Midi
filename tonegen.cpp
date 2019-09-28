@@ -29,10 +29,10 @@ void ToneGen::PlayTone(tone* toneData){
     // Create an output with our premade QAudioFormat
     QAudioOutput* audio = new QAudioOutput(format);
      audio->setVolume(toneData->volume);
-     qDebug() << audio->volume();
+     //qDebug() << audio->volume();
 
 
-
+    audio->setNotifyInterval(0);
     audio->start(input);
 }
 
@@ -58,7 +58,6 @@ tone* ToneGen::MakeTone(float freq,float seconds, double volume){
 }
 
 void ToneGen::RealTimePlay(float freq, double volume){
-
 
 }
 
