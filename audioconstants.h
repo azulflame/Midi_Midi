@@ -7,3 +7,5 @@
 #define SAMPLE_RATE 44100.0f
 #define AMP 126
 #define FREQ_CONST ((2.0 * M_PI) / SAMPLE_RATE)
+
+

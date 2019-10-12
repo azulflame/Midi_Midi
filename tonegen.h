@@ -16,7 +16,7 @@ public:
     ToneGen();
     tone* MakeTone(float freq,float seconds, double volume);
     void PlayTone(tone *soundProfile);
-    void RealTimePlay(float freq, double volume);
+    void RealTimePlay(float freq, double volume, int currentTime);
 
     QByteArray* bytebuf = new QByteArray();
     QAudioFormat format;

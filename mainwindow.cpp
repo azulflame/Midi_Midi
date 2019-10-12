@@ -17,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     void start(QIODevice *device);
 
+    globalTime = new QTime();
+
+    globalTime->start();
+
 
 }
 
@@ -86,13 +90,10 @@ void MainWindow::start(QIODevice *device)
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key() == Qt::Key_Z){
-        tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
-        toneGenerator.PlayTone(Tone);
-
+        //tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
+        //toneGenerator.PlayTone(Tone);
+        toneGenerator.RealTimePlay(440.0f,0.3f,globalTime->elapsed());
     }
-
-      qDebug() << (int)device->bytesAvailable();
-
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -107,5 +108,6 @@ void MainWindow::on_pushButton_2_clicked()
         isPlaying = true;
         q_timer->start();
     }
+
 
 }

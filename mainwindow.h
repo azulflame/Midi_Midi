@@ -49,6 +49,8 @@ public:
 
     tone* Tone3 = toneGenerator.MakeTone(523.251f,1.0f,0.3f); //C5
 
+    QTime *globalTime;
+
 private slots:
     void on_pushButton_pressed();
     void play_song();
