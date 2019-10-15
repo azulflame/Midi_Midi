@@ -40,6 +40,16 @@ void MainWindow::on_pushButton_pressed()
     q_timer = nullptr;
     notes.clear();
 
+    //play C Major
+    tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
+
+    tone* Tone1 = toneGenerator.MakeTone(329.63f,1.0f,0.3f);// E4
+
+    tone* Tone2 = toneGenerator.MakeTone(392.0f,1.0f,0.3f); //G4
+
+    tone* Tone3 = toneGenerator.MakeTone(523.251f,1.0f,0.3f); //C5
+
+
     Note note;
     note.setNote(Tone, 0);
     Note note1;
@@ -92,7 +102,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key() == Qt::Key_Z){
         //tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
         //toneGenerator.PlayTone(Tone);
-        toneGenerator.RealTimePlay(440.0f,0.3f,globalTime->elapsed());
+        //toneGenerator.RealTimePlay(440.0f,0.3f,globalTime->elapsed());
+        toneGenerator.toneType++;
+        toneGenerator.toneType = (toneGenerator.toneType)%4;
+        qDebug() << toneGenerator.toneType;
     }
 }
 
