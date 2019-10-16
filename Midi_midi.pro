@@ -28,16 +28,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        filemanager.cpp \
         main.cpp \
         mainwindow.cpp \
         note.cpp \
-        tonegen.cpp
+        song.cpp \
+        tonegen.cpp \
+        track.cpp
 
 HEADERS += \
         audioconstants.h \
+        filemanager.h \
         mainwindow.h \
         note.h \
-        tonegen.h
+        song.h \
+        tonegen.h \
+        track.h
 
 FORMS += \
         mainwindow.ui

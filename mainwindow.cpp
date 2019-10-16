@@ -91,8 +91,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 
     }
 
-      qDebug() << (int)device->bytesAvailable();
-
 }
 
 void MainWindow::on_pushButton_2_clicked()
