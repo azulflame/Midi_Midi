@@ -4,116 +4,17 @@
 /*Values obtained from chart via:
 https://i.pinimg.com/originals/41/ee/a3/41eea38658a8db1e57e7a444dad10037.png
 
-Constant frequency values for notes
-To prevent us from having to memorize any numbers and such.
+Enumeration for notes to prevent need to memorize number mapping
 */
-const float C0 = 16.35f;
-const float CSHARP0 = 17.32f;
-const float D0 = 18.35f;
-const float DSHARP0 = 19.45f;
-const float E0 = 20.60f;
-const float F0 = 21.83f;
-const float FSHARP0 = 23.12f;
-const float G0 = 24.50f;
-const float GSHARP0 = 25.96f;
-const float A0 = 27.50f;
-const float ASHARP0 = 29.14f;
-const float B0 = 30.87f;
-const float C1 = 32.70f;
-const float CSHARP1 = 34.65f;
-const float D1 = 36.71f;
-const float DSHARP1 = 38.89f;
-const float E1 = 41.20f;
-const float F1 = 43.65f;
-const float FSHARP1 = 46.25f;
-const float G1 = 49.0f;
-const float GSHARP1 = 51.91f;
-const float A1 = 55.0f;
-const float ASHARP1 = 58.27f;
-const float B1 = 61.74f;
-const float C2 = 65.41f;
-const float CSHARP2 = 69.30f;
-const float D2 = 73.42f;
-const float DSHARP2 = 77.78f;
-const float E2 = 82.41f;
-const float F2 = 87.31f;
-const float FSHARP2 = 92.50f;
-const float G2 = 98.0f;
-const float GSHARP2 = 103.83f;
-const float A2 = 110.0f;
-const float ASHARP2 = 116.54f;
-const float B2 = 123.47f;
-const float C3 = 130.81f;
-const float CSHARP3 = 138.59f;
-const float D3 = 146.83f;
-const float DSHARP3 = 155.56f;
-const float E3 = 164.81f;
-const float F3 = 174.61f;
-const float FSHARP3 = 185.0f;
-const float G3 = 196.0f;
-const float GSHARP3 = 207.65f;
-const float A3 = 220.0f;
-const float ASHARP3 = 233.08f;
-const float B3 =246.94f;
-const float C4 = 261.63f;
-const float CSHARP4 = 277.18f;
-const float D4 = 293.66f;
-const float DSHARP4 = 311.13f;
-const float E4 = 329.63f;
-const float F4 = 349.23f;
-const float FSHARP4 = 369.99f;
-const float G4 = 392.0f;
-const float GSHARP4 = 415.30f;
-const float A4 = 440.0f;
-const float ASHARP4 = 466.16f;
-const float B4 = 493.88f;
-const float C5 = 523.25f;
-const float CSHARP5 = 554.37f;
-const float D5 = 587.33f;
-const float DSHARP5 = 622.25f;
-const float E5 = 659.26f;
-const float F5 = 698.46f;
-const float FSHARP5 = 739.99f;
-const float G5 = 783.99f;
-const float GSHARP5 = 830.61f;
-const float A5 = 880.0f;
-const float ASHARP5 = 932.33f;
-const float B5 = 987.77f;
-const float C6 = 1046.5f;
-const float CSHARP6 = 1108.73f;
-const float D6 = 1174.66f;
-const float DSHARP6 = 1244.51f;
-const float E6 = 1318.51f;
-const float F6 = 1396.91f;
-const float FSHARP6 = 1479.98f;
-const float G6 = 1567.98f;
-const float GSHARP6 = 1661.22f;
-const float A6 = 1760.0f;
-const float ASHARP6 = 1864.66f;
-const float B6 = 1975.53f;
-const float C7 = 2093.0f;
-const float CSHARP7 = 2217.46f;
-const float D7 = 2349.32f;
-const float DSHARP7 = 2489.02f;
-const float E7 = 2637.02f;
-const float F7 = 2793.83f;
-const float FSHARP7 = 2959.96f;
-const float G7 = 3135.96f;
-const float GSHARP7 = 3322.44f;
-const float A7 = 3520.0f;
-const float ASHARP7 = 3729.31f;
-const float B7 = 3951.07f;
-const float C8 = 4186.01f;
-const float CSHARP8 = 4434.92f;
-const float D8 = 4698.64f;
-const float DSHARP8 = 4978.03f;
-const float E8 = 5274.04f;
-const float F8 = 5587.65f;
-const float FSHARP8 = 5919.91f;
-const float G8 = 6271.93f;
-const float GSHARP8 = 6644.88f;
-const float A8 = 7040.0f;
-const float ASHARP8 = 7458.62f;
-const float B8 = 7902.13f;
-
+enum Pitches{
+C0, CSHARP0, D0, DSHARP0, E0, F0, FSHARP0, G0, GSHARP0, A0, ASHARP0, B0,
+C1, CSHARP1, D1, DSHARP1, E1, F1, FSHARP1, G1, GSHARP1, A1, ASHARP1, B1,
+C2, CSHARP2, D2, DSHARP2, E2, F2, FSHARP2, G2, GSHARP2, A2, ASHARP2, B2,
+C3, CSHARP3, D3, DSHARP3, E3, F3, FSHARP3, G3, GSHARP3, A3, ASHARP3, B3,
+C4, CSHARP4, D4, DSHARP4, E4, F4, FSHARP4, G4, GSHARP4, A4, ASHARP4, B4,
+C5, CSHARP5, D5, DSHARP5, E5, F5, FSHARP5, G5, GSHARP5, A5, ASHARP5, B5,
+C6, CSHARP6, D6, DSHARP6, E6, F6, FSHARP6, G6, GSHARP6, A6, ASHARP6, B6,
+C7, CSHARP7, D7, DSHARP7, E7, F7, FSHARP7, G7, GSHARP7, A7, ASHARP7, B7,
+C8, CSHARP8, D8, DSHARP8, E8, F8, FSHARP8, G8, GSHARP8, A8, ASHARP8, B8
+};
 #endif // const NOTEMAP_H
