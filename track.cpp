@@ -3,6 +3,11 @@
 #include <vector>
 #include "tonegen.h"
 
+Track::Track()
+{
+    id = 0;
+}
+
 tone_vector Track::getNotesAtTime(int start_time)
 {
     return note_map.at(start_time);
@@ -12,6 +17,7 @@ int Track::findNote(tone* desired_note, int start_time)
 {
     int index = -1;
 
+    //Search for the requested note pointer within the start time map
     for(int i = 0; i < note_map.at(start_time).size(); i++)
     {
         if(note_map.at(start_time).at(i) == desired_note)
@@ -37,6 +43,8 @@ void Track::removeNote(tone* desired_note, int start_time)
     else
     {
         note_map.at(start_time).erase(note_map.at(start_time).begin() + index);
+
+        /*UPDATE UI AS NEEDED HERE*/
     }
 
     return;
@@ -45,6 +53,8 @@ void Track::removeNote(tone* desired_note, int start_time)
 void Track::addNote(tone* new_note, int start_time)
 {
     note_map.at(start_time).push_back(new_note);
+
+    /*UPDATE UI AS NEEDED HERE*/
 
     return;
 }

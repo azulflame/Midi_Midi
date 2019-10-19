@@ -2,14 +2,10 @@
 
 Note::Note()
 {
-    frequency = 261.63f;
-    duration = 1.0f;
-    amplitude = 0.3;
+
 }
 
-Note::Note(float f, float d, double a)
+Note::Note(float f, float d, double a, int i)
 {
-    frequency = f;
-    duration = d;
-    amplitude = a;
+    note_id = i;
 }

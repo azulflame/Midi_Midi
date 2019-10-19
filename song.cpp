@@ -5,6 +5,7 @@
 
 Song::Song()
 {
+    //Default values for now, we may just want to leave these as is, but we currently have the option to change them
     tempo = 144;
     time_sig_top = 4;
     time_sig_bottom = 4;
@@ -17,6 +18,10 @@ void Song::addTrack(Track new_track)
     return;
 }
 
+/*
+ * Each track needs a unique ID due to the fact that tracks may or may not have the same instrument,
+ * so deleting based on the instrument would not be ideal.
+ */
 void Song::removeTrack(int track_id)
 {
     for(int i = 0; i < tracks.size(); i++)
@@ -47,6 +52,7 @@ void Song::setTempo(int new_tempo)
     return;
 }
 
+//Done so we can easily swap between project by setting current song equal to a song object.
 Song& Song::operator=(const Song &song_data)
 {
     tempo = song_data.tempo;

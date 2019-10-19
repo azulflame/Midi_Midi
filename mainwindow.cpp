@@ -35,8 +35,8 @@ void MainWindow::on_pushButton_pressed()
 
     isPlaying = true;
     q_timer = nullptr;
-    notes.clear();
-/*
+/*    notes.clear();
+
     Note note;
     note.setNote(Tone, 0);
     Note note1;
