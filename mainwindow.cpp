@@ -87,8 +87,8 @@ void MainWindow::start(QIODevice *device)
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key() == Qt::Key_Z){
-        tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
-        toneGenerator.PlayTone(Tone);
+       // tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
+        //toneGenerator.PlayTone(Tone);
 
     }
 

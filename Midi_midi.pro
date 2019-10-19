@@ -33,6 +33,7 @@ SOURCES += \
         mainwindow.cpp \
         note.cpp \
         song.cpp \
+        tone.cpp \
         tonegen.cpp \
         track.cpp
 
@@ -42,7 +43,9 @@ HEADERS += \
         mainwindow.h \
         note.h \
         notemap.h \
+        olcnoisemaker.h \
         song.h \
+        tone.h \
         tonegen.h \
         track.h
 
@@ -53,3 +56,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+win32: LIBS += -lWinMM

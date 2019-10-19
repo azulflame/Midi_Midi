@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <vector>
 #include "tonegen.h"
+#include "tone.h"
 #include "note.h"
 #include "notemap.h"
 #include "song.h"
@@ -44,13 +45,7 @@ public:
     QTimer *q_timer = nullptr;
     //getTones();
     //play C Major
-    tone* Tone = toneGenerator.MakeTone(C4,1.0f,0.3); // C4
 
-    tone* Tone1 = toneGenerator.MakeTone(E4,1.0f,0.3);// E4
-
-    tone* Tone2 = toneGenerator.MakeTone(G4,1.0f,0.3); //G4
-
-    tone* Tone3 = toneGenerator.MakeTone(C5,1.0f,0.3); //C5
 
 
 private slots:
