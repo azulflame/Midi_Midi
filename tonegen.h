@@ -1,26 +1,21 @@
 #ifndef TONEGEN_H
 #define TONEGEN_H
-#include <QBuffer>
-#include <QAudioFormat>
+#include <QtCore>
+#include "olcnoisemaker.h"
+#include "tone.h"
 
-
-struct tone{
-    QByteArray toneProfile;
-    double volume;
-
-};
-
-class ToneGen
+class ToneGen : public QThread
 {
 public:
     ToneGen();
-    tone* MakeTone(float freq,float seconds, double volume);
-    void PlayTone(tone *soundProfile);
-    void RealTimePlay(float freq, double volume);
+    void run();
 
-    QByteArray* bytebuf = new QByteArray();
-    QAudioFormat format;
-
+    int nCurrentKey = -1;
+    bool bKeyPressed = false;
+    vector<tone> toneVector;
+    olcNoiseMaker<short> sound;
+    bool b_IsRealTime = true;
 };
+
 
 #endif // TONEGEN_H
