@@ -41,6 +41,7 @@ HEADERS += \
         filemanager.h \
         mainwindow.h \
         note.h \
+        notemap.h \
         song.h \
         tonegen.h \
         track.h

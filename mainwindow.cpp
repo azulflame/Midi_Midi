@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "audioconstants.h"
 #include "note.h"
+#include "notemap.h"
 #include <QKeyEvent>
 #include <QAudioDeviceInfo>
 #include <QIODevice>
@@ -35,7 +36,7 @@ void MainWindow::on_pushButton_pressed()
     isPlaying = true;
     q_timer = nullptr;
     notes.clear();
-
+/*
     Note note;
     note.setNote(Tone, 0);
     Note note1;
@@ -58,7 +59,7 @@ void MainWindow::on_pushButton_pressed()
     notes.push_back(note4);
     notes.push_back(note5);
     notes.push_back(note6);
-
+*/
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
     q_timer->start(16);
@@ -66,7 +67,7 @@ void MainWindow::on_pushButton_pressed()
 }
 
 void MainWindow::play_song()
-{
+{/*
     for (int i=0; i < notes.size(); i++)
     {
         if(main_timer == notes.at(i).start_time)
@@ -74,7 +75,7 @@ void MainWindow::play_song()
             toneGenerator.PlayTone(notes.at(i).Tone);
         }
     }
-
+*/
     main_timer += 16;
 }
 

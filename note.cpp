@@ -1,20 +1,15 @@
 #include "note.h"
-#include "tonegen.h"
 
 Note::Note()
 {
-    Tone = nullptr;
-    start_time = -1;
+    frequency = 261.63f;
+    duration = 1.0f;
+    amplitude = 0.3;
 }
 
-Note::Note(tone* t, int s)
+Note::Note(float f, float d, double a)
 {
-    Tone = t;
-    start_time = s;
-}
-
-void Note::setNote(tone* t, int s)
-{
-    Tone = t;
-    start_time = s;
+    frequency = f;
+    duration = d;
+    amplitude = a;
 }
