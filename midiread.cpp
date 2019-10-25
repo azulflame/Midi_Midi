@@ -34,15 +34,6 @@ int main(int argc, char *argv[])
 				// and it is linked to a note end
 				if(midi[track][event].isLinked())
 				{
-					// copy certain values
-					
-/*
-					int key = (int)midi[track][event][1]; // note in MIDI terms
-					int velocity = (int)midi[track][event][2];	// volume
-					double freq = (double)pow(2,(double)(key-69)/12) * 440;
-					double startBeat = (double)midi[track][event].tick / midi.getTicksPerQuarterNote();	// start point, in beats
-					double durationBeat = (double)midi[track][event].getTickDuration() / midi.getTicksPerQuarterNote();	// duration in ticks
-*/					
 					// generate a new Note
 					// fill it out
 					// and add it to the vector
