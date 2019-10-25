@@ -1,19 +1,12 @@
 #include "MidiFile.h"
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include "MidiEvent.h"
-#include <string>
+#include "Note.h"
+#include <cmath>
 
 using namespace std;
 using namespace smf;
-
-struct Note{
-	int key;
-	int vel;
-	int duration;
-	int start; 
-};
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +16,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	vector<Note> noteVect; // used to hold notes, not used in this file
+	vector<Note*> noteVect; // used to hold notes, not used in this file
 
 	// read and link the midi file
 	MidiFile midi;
@@ -42,27 +35,27 @@ int main(int argc, char *argv[])
 				if(midi[track][event].isLinked())
 				{
 					// copy certain values
+					
+/*
 					int key = (int)midi[track][event][1]; // note in MIDI terms
 					int velocity = (int)midi[track][event][2];	// volume
-					int startTick = midi[track][event].tick;	// start point
-					int durationTick = midi[track][event].getTickDuration();	// duration in ticks
-					
+					double freq = (double)pow(2,(double)(key-69)/12) * 440;
+					double startBeat = (double)midi[track][event].tick / midi.getTicksPerQuarterNote();	// start point, in beats
+					double durationBeat = (double)midi[track][event].getTickDuration() / midi.getTicksPerQuarterNote();	// duration in ticks
+*/					
 					// generate a new Note
 					// fill it out
 					// and add it to the vector
 					// this is not used for this file, it is just a setup
-					Note note;
-					note.key = key;
-					note.vel = velocity;
-					note.start = startTick;
-					note.duration = durationTick;
+					Note *note = new Note(midi[track][event], midi.getTicksPerQuarterNote(), 1, midi[track][event].getTickDuration());
 					noteVect.push_back(note);
 					
 					// print what we pulled out
-					cout << "key: " << key << endl;	// key, range of 21-108, 21 being low notes
-					cout << "vel: " << velocity << endl;
-					cout << "sbt: " << startTick << endl;
-					cout << "dur: " << durationTick << endl << endl;
+					cout << "key: " << note->pianoKey << endl;	// key, range of 21-108, 21 being low notes
+					cout << "frequency: " << note->frequency << "Hz" << endl;
+					cout << "velocity: " << note->velocity << endl;
+					cout << "start beat: " << note->startBeat << endl;
+					cout << "duration: " << note->beatDuration << endl << endl;
 				}
 			}
 		}
