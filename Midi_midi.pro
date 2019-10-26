@@ -32,10 +32,12 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         note.cpp \
+        pianoroll.cpp \
         song.cpp \
         tone.cpp \
         tonegen.cpp \
-        track.cpp
+        track.cpp \
+        virtualpiano.cpp
 
 HEADERS += \
         audioconstants.h \
@@ -44,10 +46,12 @@ HEADERS += \
         note.h \
         notemap.h \
         olcnoisemaker.h \
+        pianoroll.h \
         song.h \
         tone.h \
         tonegen.h \
-        track.h
+        track.h \
+        virtualpiano.h
 
 FORMS += \
         mainwindow.ui

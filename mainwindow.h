@@ -53,6 +53,18 @@ private slots:
     void play_song();
     void on_pushButton_2_clicked(); //Temporary pause button
 
+    void on_action16th_triggered();
+
+    void on_action8th_triggered();
+
+    void on_actionQuarter_triggered();
+
+    void on_actionHalf_triggered();
+
+    void on_actionWhole_triggered();
+
+    void on_checkBox_stateChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
     void keyPressEvent(QKeyEvent *event);

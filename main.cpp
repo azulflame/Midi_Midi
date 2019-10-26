@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     tone tone1;
     tone1.frequcnecy = 64;
-    tone1.bToneOn = true;
+    //tone1.bToneOn = true;
 
 
     toneGenerator.toneVector.push_back(tone1);

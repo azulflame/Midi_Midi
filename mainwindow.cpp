@@ -9,6 +9,11 @@
 #include <QDebug>
 #include <QTimer>
 #include <QTime>
+#include "pianoroll.h"
+
+
+int PianoRollStaff::noteLength;
+bool PianoRollStaff::PianoInteract;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +33,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_pressed()
 {
+
+
     if(q_timer != nullptr)
     {
         disconnect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
@@ -107,4 +114,56 @@ void MainWindow::on_pushButton_2_clicked()
         q_timer->start();
     }
 
+}
+
+
+void MainWindow::on_action16th_triggered()
+{
+    ui->action8th->setChecked(false);
+    ui->actionQuarter->setChecked(false);
+    ui->actionHalf->setChecked(false);
+    ui->actionWhole->setChecked(false);
+    PianoRollStaff::noteLength = 1;
+}
+
+void MainWindow::on_action8th_triggered()
+{
+    ui->action16th->setChecked(false);
+    ui->actionQuarter->setChecked(false);
+    ui->actionHalf->setChecked(false);
+    ui->actionWhole->setChecked(false);
+    PianoRollStaff::noteLength = 2;
+}
+
+void MainWindow::on_actionQuarter_triggered()
+{
+    ui->action8th->setChecked(false);
+    ui->action16th->setChecked(false);
+    ui->actionHalf->setChecked(false);
+    ui->actionWhole->setChecked(false);
+    PianoRollStaff::noteLength = 4;
+}
+
+void MainWindow::on_actionHalf_triggered()
+{
+    ui->action8th->setChecked(false);
+    ui->actionQuarter->setChecked(false);
+    ui->action16th->setChecked(false);
+    ui->actionWhole->setChecked(false);
+    PianoRollStaff::noteLength = 8;
+}
+
+void MainWindow::on_actionWhole_triggered()
+{
+    ui->action8th->setChecked(false);
+    ui->actionQuarter->setChecked(false);
+    ui->actionHalf->setChecked(false);
+    ui->action16th->setChecked(false);
+    PianoRollStaff::noteLength = 16;
+}
+
+void MainWindow::on_checkBox_stateChanged(int arg1)
+{
+    if(arg1 == 2) PianoRollStaff::PianoInteract = true;
+    else PianoRollStaff::PianoInteract = false;
 }
