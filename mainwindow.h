@@ -19,6 +19,8 @@
 #include "notemap.h"
 #include "song.h"
 
+static ToneGen* GlobalToneGenPntr;
+
 namespace Ui {
 class MainWindow;
 }
@@ -47,6 +49,7 @@ public:
     //play C Major
 
 
+    void static setToneGenPtr(ToneGen *CurrentToneGen);
 
 private slots:
     void on_pushButton_pressed(); //Temporary play button
@@ -64,6 +67,7 @@ private slots:
     void on_actionWhole_triggered();
 
     void on_checkBox_stateChanged(int arg1);
+
 
 private:
     Ui::MainWindow *ui;

@@ -14,7 +14,12 @@ public:
     bool bKeyPressed = false;
     vector<tone> toneVector;
     olcNoiseMaker<short> sound;
-    bool b_IsRealTime = true;
+    bool b_IsRealTime = false;
+    void addTone(int toneToAdd);
+    void removeTone(int toneToRemove);
+    void playTone(int toneToPlay);
+    void stopTone(int toneToStop);
+
 };
 
 

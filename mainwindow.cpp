@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     void start(QIODevice *device);
 
 
+
 }
 
 MainWindow::~MainWindow()
@@ -67,6 +68,7 @@ void MainWindow::on_pushButton_pressed()
     notes.push_back(note5);
     notes.push_back(note6);
 */
+
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
     q_timer->start(16);
@@ -94,8 +96,15 @@ void MainWindow::start(QIODevice *device)
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key() == Qt::Key_Z){
-       // tone* Tone = toneGenerator.MakeTone(261.63f,1.0f,0.3f); // C4
-        //toneGenerator.PlayTone(Tone);
+       //GlobalToneGenPntr->addTone(C4);
+       //qDebug()  << GlobalToneGenPntr;
+       //GlobalToneGenPntr->playTone(C4);
+
+    }
+
+    if(event->key() == Qt::Key_X){
+        //GlobalToneGenPntr->stopTone(C4);
+       // GlobalToneGenPntr->removeTone(C4);
 
     }
 
@@ -114,6 +123,11 @@ void MainWindow::on_pushButton_2_clicked()
         q_timer->start();
     }
 
+}
+
+void MainWindow::setToneGenPtr(ToneGen *CurrentToneGen){
+
+    GlobalToneGenPntr = CurrentToneGen;
 }
 
 

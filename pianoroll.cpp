@@ -1,5 +1,5 @@
 #include "pianoroll.h"
-#include "ui_pianoroll.h"
+//#include "ui_pianoroll.h"
 #include <vector>
 QGraphicsScene* PianoRollStaff::myScene;
 QMap<QString, int> PianoRoll::noteNames;

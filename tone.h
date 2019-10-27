@@ -8,19 +8,20 @@ class tone
 {
 public:
     tone();
-    tone(int freq, double dur, double vol, double* dTime);
+    tone(int freq);
 
     int frequcnecy = 0.0;
-    double duriation = 0.0;
-    double volumeMult = 0.0;
+    //int duriation = 0.0;
+    double volumeMult = 1.0;
     bool bToneOn = false;
     //double* timePntr = nullptr;
+    bool killFlag= false;
 
-    double ToneStartTime = 0.0;
-    double ToneEndTime = 0.0;
+    //int ToneStartTime = 0;
+    //int ToneEndTime = 0;
 
-    void start();
-
+    void play();
+    void stop();
 
 };
 

@@ -8,6 +8,58 @@ using namespace std;
 #define FTYPE double
 
 
+
+void ToneGen::addTone(int  toneToAdd)
+{
+    for(int i = 0 ; i< toneVector.size(); i++)
+    {
+        if(toneToAdd == toneVector[i].frequcnecy)
+        {
+            return;
+        }
+    }
+
+    static tone Tone(toneToAdd);
+    toneVector.push_back(Tone);
+    //wcout << toneVector.size();
+}
+
+void ToneGen::removeTone(int toneToRemove)
+{
+    for(unsigned int i = 0; i < toneVector.size();i++)
+    {
+        if(toneToRemove == toneVector[i].frequcnecy)
+        {
+            toneVector[i].killFlag = true;
+        }
+    }
+
+}
+
+
+void ToneGen::playTone(int toneToPlay){
+    for(int i = 0; i< toneVector.size();i++)
+    {
+        if(toneToPlay == toneVector[i].frequcnecy)
+        {
+            toneVector[i].play();
+        }
+    }
+
+}
+
+
+void ToneGen::stopTone(int toneToStop){
+    for(int i = 0; i< toneVector.size();i++)
+    {
+        if(toneToStop == toneVector[i].frequcnecy)
+        {
+            toneVector[i].stop();
+        }
+    }
+
+}
+
 namespace synth
 {
     //////////////////////////////////////////////////////////////////////////////
@@ -244,10 +296,10 @@ namespace synth
     {
         instrument_harmonica()
         {
-            env.dAttackTime = 0.00;
+            env.dAttackTime = 0.05;
             env.dDecayTime = 1.0;
             env.dSustainAmplitude = 0.95;
-            env.dReleaseTime = 0.1;
+            env.dReleaseTime = 1.5;
             fMaxLifeTime = -1.0;
             name = L"Harmonica";
             dVolume = 0.3;
@@ -259,10 +311,9 @@ namespace synth
             if (dAmplitude <= 0.0) bNoteFinished = true;
 
             FTYPE dSound =
-                + 1.0  * synth::osc(n.on - dTime, synth::scale(n.id-12), synth::OSC_SAW_ANA, 5.0, 0.001, 100)
+                + 1.0  * synth::osc(n.on - dTime, synth::scale(n.id), synth::OSC_SAW_DIG, 5.0, 0.001, 100)
                 + 1.00 * synth::osc(dTime - n.on, synth::scale(n.id), synth::OSC_SQUARE, 5.0, 0.001)
-                + 0.50 * synth::osc(dTime - n.on, synth::scale(n.id + 12), synth::OSC_SQUARE)
-                + 0.05  * synth::osc(dTime - n.on, synth::scale(n.id + 24), synth::OSC_NOISE);
+                + 0.50 * synth::osc(dTime - n.on, synth::scale(n.id), synth::OSC_SQUARE);
 
             return dAmplitude * dSound * dVolume;
         }
@@ -301,7 +352,7 @@ namespace synth
     {
         instrument_drumsnare()
         {
-            env.dAttackTime = 0.0;
+            env.dAttackTime = 0.05;
             env.dDecayTime = 0.2;
             env.dSustainAmplitude = 0.0;
             env.dReleaseTime = 0.0;
@@ -502,15 +553,17 @@ void ToneGen::run(){
     double dElapsedTime = 0.0;
     double dWallTime = 0.0;
 
-    // Establish Sequencer
-    synth::sequencer seq(90.0);
-    seq.AddInstrument(&instKick);
-    seq.AddInstrument(&instSnare);
-    seq.AddInstrument(&instHiHat);
+    //Establish Sequencer
+    //synth::sequencer seq(90.0);
+    //seq.AddInstrument(&instKick);
+    //seq.AddInstrument(&instSnare);
+    //seq.AddInstrument(&instHiHat);
 
     //seq.vecChannel.at(0).sBeat = L"...X.....X...XX.";
-   // seq.vecChannel.at(1).sBeat = L".X....X..X.X.XX.";
+    //seq.vecChannel.at(1).sBeat = L".X....X..X.X.XX.";
     //seq.vecChannel.at(2).sBeat = L"......X......X..";
+
+    unsigned int debugSize = 0;
 
     while (1)
         {
@@ -523,89 +576,130 @@ void ToneGen::run(){
             dElapsedTime = chrono::duration<FTYPE>(time_last_loop).count();
             dWallTime += dElapsedTime;
             FTYPE dTimeNow = sound.GetTime();
-
-
-
-
-
-
-
-
-            // -------------- Test for tones in tone vector.------------------------------------------------------------------------------------------------------
-
-            int thisFreq;
-
-            // Keyboard (generates and removes notes depending on key state) ========================================
-            for (unsigned int k = 0; k < toneVector.size(); k++)
+            if(toneVector.size() != debugSize)
             {
+                qDebug() << "VEC SIZE: "<< toneVector.size();
+                debugSize = toneVector.size();
+            }
 
-                // Check if note already exists in currently playing notes
-                muxNotes.lock();
 
-//                short nKeyState = GetAsyncKeyState((unsigned char)("Z"[k]));
-//                if(nKeyState)
-//                {
-//                    toneVector[k].bToneOn = false;
-
-//                }
-
-//                short nKeyState1 = GetAsyncKeyState((unsigned char)("X"[k]));
-//                if(nKeyState1)
-//                {
-//                    toneVector[k].bToneOn = true;
-//                }
-
-                thisFreq = toneVector[k].frequcnecy;
-                auto noteFound = find_if(vecNotes.begin(), vecNotes.end(), [&thisFreq](synth::note const& item) { return item.id == thisFreq  && item.channel == &instHarm; });
-                if (noteFound == vecNotes.end())
+            if(b_IsRealTime)
+            {
+                // Keyboard (generates and removes notes depending on key state) ========================================
+                for (int k = 0; k < 16; k++)
                 {
-                    // Note not found in vector
-                    if (toneVector[k].bToneOn)
-                    {
+                    short nKeyState = GetAsyncKeyState((unsigned char)("ZSXCFVGBNJMK\xbcL\xbe\xbf"[k]));
 
-                        // Key has been pressed so create a new note
-                        synth::note n;
-                        n.id = thisFreq;
-                        n.on = dTimeNow;
-                        n.active = true;
-                        n.channel = &instHarm;
-
-                        // Add note to vector
-                        vecNotes.emplace_back(n);
-                    }
-                }
-                else
-                {
-                    // Note exists in vector
-                    if (toneVector[k].bToneOn)
+                    // Check if note already exists in currently playing notes
+                    muxNotes.lock();
+                    auto noteFound = find_if(vecNotes.begin(), vecNotes.end(), [&k](synth::note const& item) { return item.id == k+64 && item.channel == &instHarm; });
+                    if (noteFound == vecNotes.end())
                     {
-                        // Key is still held, so do nothing
-                        if (noteFound->off > noteFound->on)
+                        // Note not found in vector
+                        if (nKeyState & 0x8000)
                         {
-                            // Key has been pressed again during release phase
-                            noteFound->on = dTimeNow;
-                            noteFound->active = true;
+                            // Key has been pressed so create a new note
+                            synth::note n;
+                            n.id = k + 64;
+                            n.on = dTimeNow;
+                            n.active = true;
+                            n.channel = &instHarm;
+
+                            // Add note to vector
+                            vecNotes.emplace_back(n);
                         }
                     }
                     else
                     {
-                        // Key has been released, so switch off
-                        if (noteFound->off < noteFound->on)
-                            noteFound->off = dTimeNow;
-
-                        //toneVector.erase(toneVector.begin() + k );
+                        // Note exists in vector
+                        if (nKeyState & 0x8000)
+                        {
+                            // Key is still held, so do nothing
+                            if (noteFound->off > noteFound->on)
+                            {
+                                // Key has been pressed again during release phase
+                                noteFound->on = dTimeNow;
+                                noteFound->active = true;
+                            }
+                        }
+                        else
+                        {
+                            // Key has been released, so switch off
+                            if (noteFound->off < noteFound->on)
+                                noteFound->off = dTimeNow;
+                        }
                     }
+                    muxNotes.unlock();
+                }
+
+            }else{ // is not real time play back
+                int thisFreq;
+
+                // Keyboard (generates and removes notes depending on key state) ========================================
+                for (unsigned int k = 0; k < toneVector.size(); k++)
+                {
+
+                    // Check if note already exists in currently playing notes
+                    muxNotes.lock();
+
+                    thisFreq = toneVector[k].frequcnecy;
+                    auto noteFound = find_if(vecNotes.begin(), vecNotes.end(), [&thisFreq](synth::note const& item) { return item.id == thisFreq  && item.channel == &instHarm; });
+                    if (noteFound == vecNotes.end())
+                    {
+                        // Note not found in vector
+                        if (toneVector[k].bToneOn)
+                        {
+
+                            // Key has been pressed so create a new note
+                            synth::note n;
+                            n.id = thisFreq;
+                            n.on = dTimeNow;
+                            n.active = true;
+                            n.channel = &instHarm;
+
+                            // Add note to vector
+                            vecNotes.emplace_back(n);
+                        }
+                    }
+                    else
+                    {
+                        // Note exists in vector
+                        if (toneVector[k].bToneOn)
+                        {
+                            // Key is still held, so do nothing
+                            if (noteFound->off > noteFound->on)
+                            {
+                                // Key has been pressed again during release phase
+                                noteFound->on = dTimeNow;
+                                noteFound->active = true;
+                            }
+                        }
+                        else
+                        {
+                            // Key has been released, so switch off
+                            if (noteFound->off < noteFound->on)
+                                noteFound->off = dTimeNow;
+
+                            //toneVector.erase(toneVector.begin() + k );
+                        }
+
+                        if(toneVector[k].killFlag)// if you want to remove a tone
+                        {
+
+                            toneVector.erase(toneVector.begin()+ k);
+                            //qDebug() << "killing" ;
+
+                        }
+                    }
+
+
+                    muxNotes.unlock();
                 }
 
 
-                muxNotes.unlock();
             }
 
 
         }
-
-
-
-
 
 }
