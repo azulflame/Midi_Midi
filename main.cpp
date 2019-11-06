@@ -1,49 +1,28 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "tonegen.h"
-#include "tone.h"
 
+#include "tone.h"
+#include "common.h"
 
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    ToneGen toneGenerator;
-    //ToneGen RealTimePlay;
-
-    //RealTimePlay.b_IsRealTime = true;
-
-    //RealTimePlay.start();
-    toneGenerator.start();
-
-    //tone tone1(64);
-    //tone1.frequcnecy = 64;
-    //tone1.bToneOn = true;
-    //tone tone2(10);
-   // tone1.frequcnecy = 64;
-   //tone2.bToneOn = true;
-    //tone tone3(71);
-    //tone1.frequcnecy = 64;
-    //tone3.bToneOn = true;
-    //tone tone4(60);
-    //tone1.frequcnecy = 64;
-    //tone4.bToneOn = true;
+    QApplication a(argc, argv); // start main window
+    MainWindow w; // this has to be before the ToneGen thread, or we will get a terrible sounding synth
 
 
-    //toneGenerator.toneVector.push_back(&tone1);
-    //toneGenerator.toneVector.push_back(&tone2);
-    //toneGenerator.toneVector.push_back(&tone3);
-    //toneGenerator.toneVector.push_back(&tone4);
+    ToneGen toneGenerator; // start tonegen
+    //toneGenerator.b_IsRealTime = true; // allow for play on keyboard
+    toneGenerator.start(); // start the thread
+
+    w.setToneGenPtr(&toneGenerator); // set up the global pointer
+    GlobalToneGenPntr = &toneGenerator; // set the pnter
 
 
-    toneGenerator.b_IsRealTime = false;
-    //GlobalToneGenPntr = &toneGenerator;
-    MainWindow::setToneGenPtr(&toneGenerator);
 
     qDebug()  << GlobalToneGenPntr;
+
+    w.show();       // show the main window
 
 
     return a.exec();

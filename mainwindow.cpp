@@ -95,18 +95,39 @@ void MainWindow::start(QIODevice *device)
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
-    if(event->key() == Qt::Key_Z){
-       //GlobalToneGenPntr->addTone(C4);
-       //qDebug()  << GlobalToneGenPntr;
-       //GlobalToneGenPntr->playTone(C4);
+//FOR TESTING THE SYNTH
+//    if(event->key() == Qt::Key_Z){
+//       GlobalToneGenPntr->addTone(C4);
+//       qDebug()  << GlobalToneGenPntr;
+//       GlobalToneGenPntr->playTone(C4);
 
-    }
+//    }
 
-    if(event->key() == Qt::Key_X){
-        //GlobalToneGenPntr->stopTone(C4);
-       // GlobalToneGenPntr->removeTone(C4);
+//    if(event->key() == Qt::Key_X){
+//        GlobalToneGenPntr->addTone(B4);
+//        qDebug()  << GlobalToneGenPntr;
+//        GlobalToneGenPntr->playTone(B4);
 
-    }
+//    }
+
+//    if(event->key() == Qt::Key_C){
+//        GlobalToneGenPntr->addTone(A4);
+//        qDebug()  << GlobalToneGenPntr;
+//        GlobalToneGenPntr->playTone(A4);
+
+//    }
+//    if(event->key() == Qt::Key_V){
+//        GlobalToneGenPntr->addTone(D4);
+//        qDebug()  << GlobalToneGenPntr;
+//        GlobalToneGenPntr->playTone(D4);
+
+//    }
+//    if(event->key() == Qt::Key_B){
+//        GlobalToneGenPntr->addTone(E4);
+//        qDebug()  << GlobalToneGenPntr;
+//        GlobalToneGenPntr->playTone(E4);
+
+//    }
 
 }
 

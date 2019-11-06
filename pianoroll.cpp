@@ -41,6 +41,12 @@ void PianoRollStaff::CustomNote(int x, int y){
 
 void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent*){
     //tongen.playKey(myMidiKey);
+
+    //qDebug() << GlobalToneGenPntr;
+    GlobalToneGenPntr->addTone(myMidiKey+57);
+    GlobalToneGenPntr->playTone(myMidiKey+57); // added 57 because A4 is 0 on his scale
+    qDebug() << myMidiKey ;
+
     if(!PianoInteract) return;
     if(myNote) return;
     AddNote(this->x(), this->y());

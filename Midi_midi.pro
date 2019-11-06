@@ -28,6 +28,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        common.cpp \
         filemanager.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -41,6 +42,7 @@ SOURCES += \
 
 HEADERS += \
         audioconstants.h \
+        common.h \
         filemanager.h \
         mainwindow.h \
         note.h \

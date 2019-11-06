@@ -11,7 +11,7 @@
 #include <QReadWriteLock>
 #include <QDebug>
 #include <vector>
-
+#include "common.h"
 #include "tonegen.h"
 
 namespace Ui {

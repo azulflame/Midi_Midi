@@ -19,7 +19,7 @@ void ToneGen::addTone(int  toneToAdd)
         }
     }
 
-    static tone Tone(toneToAdd);
+    tone Tone(toneToAdd);
     toneVector.push_back(Tone);
     //wcout << toneVector.size();
 }
@@ -633,19 +633,32 @@ void ToneGen::run(){
                 }
 
             }else{ // is not real time play back
-                int thisFreq;
 
+                int thisFreq ;
                 // Keyboard (generates and removes notes depending on key state) ========================================
                 for (unsigned int k = 0; k < toneVector.size(); k++)
                 {
+                    thisFreq = toneVector[k].frequcnecy;
+                    //qDebug() << thisFreq;
 
                     // Check if note already exists in currently playing notes
                     muxNotes.lock();
 
-                    thisFreq = toneVector[k].frequcnecy;
+
                     auto noteFound = find_if(vecNotes.begin(), vecNotes.end(), [&thisFreq](synth::note const& item) { return item.id == thisFreq  && item.channel == &instHarm; });
-                    if (noteFound == vecNotes.end())
+//                    //int noteFound = -1;
+//                    for(int i = 0; i < vecNotes.size(); i++)
+//                    {
+//                        if(vecNotes[i].id == thisFreq)
+//                            noteFound = thisFreq;
+//                    }
+
+                    if (noteFound == vecNotes.end()) // note is not playing but is in tone vector
                     {
+                        //qDebug() << thisFreq;
+                        //qDebug() << "K: " << k;
+
+
                         // Note not found in vector
                         if (toneVector[k].bToneOn)
                         {
@@ -659,10 +672,12 @@ void ToneGen::run(){
 
                             // Add note to vector
                             vecNotes.emplace_back(n);
+                            //qDebug()<< "NoteNOTFound" << vecNotes.size();
                         }
                     }
                     else
                     {
+                        //synth::note * thisNote = &vecNotes[noteFound]
                         // Note exists in vector
                         if (toneVector[k].bToneOn)
                         {

@@ -18,8 +18,9 @@
 #include "note.h"
 #include "notemap.h"
 #include "song.h"
+#include "common.h"
 
-static ToneGen* GlobalToneGenPntr;
+//static ToneGen* GlobalToneGenPntr;
 
 namespace Ui {
 class MainWindow;
