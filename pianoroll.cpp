@@ -24,7 +24,13 @@ PianoRollStaff::PianoRollStaff(QObject* parent, QString staffName, bool isOpenSt
     if(myNote) isChecked = true;
     else isChecked = false;
     this->setAcceptHoverEvents(true);
-    this->setAcceptedMouseButtons(Qt::LeftButton);
+    if(myNote){
+        qDebug() << "Hello";
+        this->setAcceptedMouseButtons(Qt::RightButton);
+    }
+    else{
+        this->setAcceptedMouseButtons(Qt::LeftButton);
+    }
 }
 
 void PianoRollStaff::AddNote(int x, int y){
@@ -35,11 +41,19 @@ void PianoRollStaff::AddNote(int x, int y){
     myScene->addItem((QGraphicsItem*)newNote);
 }//creates a basic note based on selected input size
 
+void PianoRollStaff::DeleteNote(){
+    myScene->removeItem(this);
+
+    //add what you need to delete note from song
+
+    delete this;
+}
+
 void PianoRollStaff::CustomNote(int x, int y){
     //Creating a custom size not
 }
 
-void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent*){
+void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //tongen.playKey(myMidiKey);
 
     //qDebug() << GlobalToneGenPntr;
@@ -48,8 +62,8 @@ void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent*){
     qDebug() << myMidiKey ;
 
     if(!PianoInteract) return;
-    if(myNote) return;
-    AddNote(this->x(), this->y());
+    if(event->buttons() == Qt::LeftButton && !myNote) AddNote(this->x(), this->y());
+    if(event->buttons() == Qt::RightButton) DeleteNote();
     update();
 }//plays note pertaining to grid area and adds note if notation mode is on
 
@@ -63,7 +77,8 @@ void PianoRollStaff::paint(QPainter* painter, const QStyleOptionGraphicsItem*, Q
     painter->setPen(Qt::gray);
 
     if(isHovering && !isChecked){
-        painter->setBrush(QColor("#8080ff"));
+        if(myNote) painter->setBrush(Qt::green);
+        else painter->setBrush(QColor("#8080ff"));
     }//changes color for block hovered on
     else if(isChecked){
         painter->setBrush(Qt::blue);

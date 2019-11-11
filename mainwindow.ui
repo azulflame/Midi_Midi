@@ -144,8 +144,11 @@
    </widget>
    <widget class="QMenu" name="menuT_empo">
     <property name="title">
-     <string>T&amp;empo</string>
+     <string>&amp;Add</string>
     </property>
+    <addaction name="action_Measures"/>
+    <addaction name="action_Tempo"/>
+    <addaction name="action_Notes"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Instrument"/>
@@ -205,6 +208,21 @@
    </property>
    <property name="text">
     <string>Whole</string>
+   </property>
+  </action>
+  <action name="action_Measures">
+   <property name="text">
+    <string>&amp;Measures</string>
+   </property>
+  </action>
+  <action name="action_Tempo">
+   <property name="text">
+    <string>&amp;Tempo</string>
+   </property>
+  </action>
+  <action name="action_Notes">
+   <property name="text">
+    <string>&amp;Notes</string>
    </property>
   </action>
  </widget>

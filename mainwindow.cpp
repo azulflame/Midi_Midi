@@ -11,7 +11,6 @@
 #include <QTime>
 #include "pianoroll.h"
 
-
 int PianoRollStaff::noteLength;
 bool PianoRollStaff::PianoInteract;
 
@@ -201,4 +200,11 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
 {
     if(arg1 == 2) PianoRollStaff::PianoInteract = true;
     else PianoRollStaff::PianoInteract = false;
+}
+
+void MainWindow::on_action_Measures_triggered()
+{
+    MAdder dialog;
+    dialog.setModal(true);
+    dialog.exec();
 }

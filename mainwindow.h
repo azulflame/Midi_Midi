@@ -18,6 +18,7 @@
 #include "note.h"
 #include "notemap.h"
 #include "song.h"
+#include "madder.h"
 #include "common.h"
 
 //static ToneGen* GlobalToneGenPntr;
@@ -70,8 +71,11 @@ private slots:
     void on_checkBox_stateChanged(int arg1);
 
 
+    void on_action_Measures_triggered();
+
 private:
     Ui::MainWindow *ui;
+    MAdder* madder;
     void keyPressEvent(QKeyEvent *event);
 };
 

@@ -30,6 +30,7 @@ CONFIG += c++11
 SOURCES += \
         common.cpp \
         filemanager.cpp \
+        madder.cpp \
         main.cpp \
         mainwindow.cpp \
         note.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
         audioconstants.h \
         common.h \
         filemanager.h \
+        madder.h \
         mainwindow.h \
         note.h \
         notemap.h \
@@ -56,6 +58,7 @@ HEADERS += \
         virtualpiano.h
 
 FORMS += \
+        madder.ui \
         mainwindow.ui
 
 # Default rules for deployment.

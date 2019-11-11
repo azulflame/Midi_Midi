@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
 #include <QPaintEvent>
 #include <QList>
@@ -35,13 +36,13 @@ public:
     void AddNote(int x, int y);
     void CustomNote(int x, int y);
     void DeleteNote();
-    void AddBars(int numBars);
-    void DeleteBars(int numBars);
+    void AddMeasures(int numMea);
+    void DeleteMeasures(int numMea);
 
     static QGraphicsScene* myScene;
     static int noteLength;
     static bool PianoInteract;
-
+    static int measureAddition;
 
 private:
     QString myStaffName;
