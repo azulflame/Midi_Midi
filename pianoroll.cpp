@@ -88,8 +88,8 @@ void PianoRollStaff::AddMeasures(){
 }
 
 void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    GlobalToneGenPntr->addTone(myMidiKey+57);
-    GlobalToneGenPntr->playTone(myMidiKey+57); // added 57 because A4 is 0 on his scale
+    /*GlobalToneGenPntr->addTone(myMidiKey+57);
+    GlobalToneGenPntr->playTone(myMidiKey+57);*/ // added 57 because A4 is 0 on his scale
 
     if(!PianoInteract) return;
     if(event->buttons() == Qt::RightButton && myNote == true) DeleteNote();
