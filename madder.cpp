@@ -2,8 +2,6 @@
 #include "ui_madder.h"
 #include <QDebug>
 
-int PianoRollStaff::measureAddition = 0;
-
 MAdder::MAdder(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MAdder)
@@ -23,6 +21,7 @@ void MAdder::on_spinBox_valueChanged(int arg1)
 
 void MAdder::on_buttonBox_accepted()
 {
-    PianoRollStaff::measureAddition = numMeasures;
-    qDebug() << numMeasures;
+    for(int i = 0; i < numMeasures; i++)
+        PianoRollStaff::AddMeasures();
+
 }

@@ -36,13 +36,15 @@ public:
     void AddNote(int x, int y);
     void CustomNote(int x, int y);
     void DeleteNote();
-    void AddMeasures(int numMea);
-    void DeleteMeasures(int numMea);
+
+    static void AddMeasures();
+    static void DeleteMeasures(int numMea);
 
     static QGraphicsScene* myScene;
+    static QObject* myParent;
     static int noteLength;
     static bool PianoInteract;
-    static int measureAddition;
+    static int numBlocks;
 
 private:
     QString myStaffName;
