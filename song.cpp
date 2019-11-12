@@ -1,14 +1,18 @@
 #include <vector>
 #include "song.h"
+#include "midinote.h"
 #include "track.h"
 
 
 Song::Song()
 {
+    Track empty_track;
+    vector<MidiNote> empty_nums;
     //Default values for now, we may just want to leave these as is, but we currently have the option to change them
     tempo = 144;
     time_sig_top = 4;
     time_sig_bottom = 4;
+    this->addTrack(empty_track);
 }
 
 void Song::addTrack(Track new_track)

@@ -32,7 +32,7 @@ SOURCES += \
         filemanager.cpp \
         main.cpp \
         mainwindow.cpp \
-        note.cpp \
+        midinote.cpp \
         pianoroll.cpp \
         song.cpp \
         tone.cpp \
@@ -45,7 +45,7 @@ HEADERS += \
         common.h \
         filemanager.h \
         mainwindow.h \
-        note.h \
+        midinote.h \
         notemap.h \
         olcnoisemaker.h \
         pianoroll.h \

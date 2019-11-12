@@ -4,7 +4,7 @@
 #include <vector>
 #include "song.h"
 #include "track.h"
-#include "note.h"
+#include "midinote.h"
 
 /* DISCLAIMER: I dont remember if we need an overloaded operator to set
    the current song equal to the songer returned, if we do i will take care of it

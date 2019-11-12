@@ -2,3 +2,4 @@
 
 
 ToneGen * GlobalToneGenPntr = nullptr;
+MainWindow * GlobalMainWindow = nullptr;

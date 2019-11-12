@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "audioconstants.h"
-#include "note.h"
+#include "midinote.h"
 #include "notemap.h"
 #include <QKeyEvent>
 #include <QAudioDeviceInfo>
@@ -10,9 +10,11 @@
 #include <QTimer>
 #include <QTime>
 #include "pianoroll.h"
+#include <map>
+#include <vector>
 
-
-int PianoRollStaff::noteLength;
+typedef std::vector<MidiNote> tone_vector;
+int PianoRollStaff::noteLength = 4;
 bool PianoRollStaff::PianoInteract;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -35,7 +37,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_pressed()
 {
 
-
     if(q_timer != nullptr)
     {
         disconnect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
@@ -43,31 +44,6 @@ void MainWindow::on_pushButton_pressed()
 
     isPlaying = true;
     q_timer = nullptr;
-/*    notes.clear();
-
-    Note note;
-    note.setNote(Tone, 0);
-    Note note1;
-    note1.setNote(Tone1, 960);
-    Note note2;
-    note2.setNote(Tone2, 1920);
-    Note note3;
-    note3.setNote(Tone3, 2880);
-    Note note4;
-    note4.setNote(Tone2, 3840);
-    Note note5;
-    note5.setNote(Tone1, 4800);
-    Note note6;
-    note6.setNote(Tone, 5760);
-
-    notes.push_back(note);
-    notes.push_back(note1);
-    notes.push_back(note2);
-    notes.push_back(note3);
-    notes.push_back(note4);
-    notes.push_back(note5);
-    notes.push_back(note6);
-*/
 
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
@@ -76,16 +52,52 @@ void MainWindow::on_pushButton_pressed()
 }
 
 void MainWindow::play_song()
-{/*
-    for (int i=0; i < notes.size(); i++)
+{
+    main_timer = 0;
+    std::map<int, tone_vector>::iterator track_iterator;
+
+    //Continue playing the song until play has stopped
+    while(isPlaying)
     {
-        if(main_timer == notes.at(i).start_time)
+        for(unsigned long long int i = main_timer; i < (main_timer + 15); i++)
         {
-            toneGenerator.PlayTone(notes.at(i).Tone);
+            //Play notes
+            track_iterator = current_song.tracks.at(0).note_map.find(i);
+
+            if(track_iterator != current_song.tracks.at(0).note_map.end())
+            {
+                //Play each note that exists at the current start time
+                for(unsigned long long int j = 0; j < current_song.tracks.at(0).note_map[main_timer].size(); j++)
+                {
+                    GlobalToneGenPntr->playTone(current_song.tracks.at(0).note_map[main_timer].at(j).value);
+                    //Add to delete queue
+                    MidiNote new_delete;
+                    new_delete.value = current_song.tracks.at(0).note_map[main_timer].at(j).value;
+                    new_delete.duration = (main_timer*10) + (current_song.tracks.at(0).note_map[main_timer].at(j).duration * 100000);
+                    delete_queue.push_back(new_delete);
+                }
+
+                //End notes that need to end
+            }
+        }
+
+        main_timer += 16;
+
+        //Stop notes
+        for(int x = (delete_queue.size() - 1); x >= 0; x--)
+        {
+            if(main_timer > delete_queue[x].duration)
+            {
+                GlobalToneGenPntr->stopTone(delete_queue[x].value);
+                delete_queue.erase(delete_queue.begin() + x);
+            }
+        }
+
+        if(main_timer >= 1000000)
+        {
+            isPlaying = false;
         }
     }
-*/
-    main_timer += 16;
 }
 
 void MainWindow::start(QIODevice *device)
@@ -159,6 +171,11 @@ void MainWindow::on_action16th_triggered()
     ui->actionHalf->setChecked(false);
     ui->actionWhole->setChecked(false);
     PianoRollStaff::noteLength = 1;
+    isPlaying = !isPlaying;
+    if(isPlaying)
+    {
+        play_song();
+    }
 }
 
 void MainWindow::on_action8th_triggered()
@@ -202,3 +219,4 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
     if(arg1 == 2) PianoRollStaff::PianoInteract = true;
     else PianoRollStaff::PianoInteract = false;
 }
+

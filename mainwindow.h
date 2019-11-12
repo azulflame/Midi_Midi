@@ -15,12 +15,9 @@
 #include <vector>
 #include "tonegen.h"
 #include "tone.h"
-#include "note.h"
+#include "midinote.h"
 #include "notemap.h"
 #include "song.h"
-#include "common.h"
-
-//static ToneGen* GlobalToneGenPntr;
 
 namespace Ui {
 class MainWindow;
@@ -42,10 +39,11 @@ public:
     ToneGen toneGenerator;
     void start(QIODevice *device);
     QIODevice *device;
-    int main_timer;
-    bool isPlaying = false; //Whether or not playback is currently active.
+    unsigned long long int main_timer;
     Song current_song;
+    bool isPlaying = false; //Whether or not playback is currently active.
     QTimer *q_timer = nullptr;
+    vector<MidiNote> delete_queue;
     //getTones();
     //play C Major
 

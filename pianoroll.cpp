@@ -1,4 +1,5 @@
 #include "pianoroll.h"
+#include "song.h"
 //#include "ui_pianoroll.h"
 #include <vector>
 QGraphicsScene* PianoRollStaff::myScene;
@@ -40,12 +41,8 @@ void PianoRollStaff::CustomNote(int x, int y){
 }
 
 void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent*){
-    //tongen.playKey(myMidiKey);
-
-    //qDebug() << GlobalToneGenPntr;
-    GlobalToneGenPntr->addTone(myMidiKey+57);
-    GlobalToneGenPntr->playTone(myMidiKey+57); // added 57 because A4 is 0 on his scale
-    qDebug() << myMidiKey ;
+    GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, (this->x()*100000));
+    //GlobalToneGenPntr->playTone(myMidiKey+57); // added 57 because A4 is 0 on his scale
 
     if(!PianoInteract) return;
     if(myNote) return;
