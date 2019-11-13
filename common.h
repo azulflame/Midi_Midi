@@ -1,8 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 #include "tonegen.h"
-#include "song.h"
 #include "mainwindow.h"
+#include <QMainWindow>
 #include <QApplication>
 
 extern ToneGen* GlobalToneGenPntr;

@@ -99,7 +99,7 @@ VirtualPiano::VirtualPiano(QWidget* parent)
     this->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
     k = 0;
-    curKey = -57;
+    curKey = 51;
 
     for (int i = 0; i < 9; i++) {
         QString num = QString::number(i);

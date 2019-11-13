@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QTime>
 #include "pianoroll.h"
+#include "common.h"
 #include <map>
 #include <vector>
 
@@ -36,7 +37,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_pressed()
 {
-
+    /*
     if(q_timer != nullptr)
     {
         disconnect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
@@ -49,6 +50,12 @@ void MainWindow::on_pushButton_pressed()
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
     q_timer->start(16);
     main_timer = 0;
+    */
+    isPlaying = !isPlaying;
+    if(isPlaying)
+    {
+        play_song();
+    }
 }
 
 void MainWindow::play_song()
@@ -171,11 +178,6 @@ void MainWindow::on_action16th_triggered()
     ui->actionHalf->setChecked(false);
     ui->actionWhole->setChecked(false);
     PianoRollStaff::noteLength = 1;
-    isPlaying = !isPlaying;
-    if(isPlaying)
-    {
-        play_song();
-    }
 }
 
 void MainWindow::on_action8th_triggered()
@@ -220,3 +222,9 @@ void MainWindow::on_checkBox_stateChanged(int arg1)
     else PianoRollStaff::PianoInteract = false;
 }
 
+void MainWindow::on_action_Measures_triggered()
+{
+    MAdder dialog;
+    dialog.setModal(true);
+    dialog.exec();
+}

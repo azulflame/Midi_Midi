@@ -1,5 +1,4 @@
 #include "common.h"
 
-
-ToneGen * GlobalToneGenPntr = nullptr;
-MainWindow * GlobalMainWindow = nullptr;
+ToneGen* GlobalToneGenPntr = nullptr;
+MainWindow* GlobalMainWindow = nullptr;

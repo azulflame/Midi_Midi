@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
 #include <QPaintEvent>
 #include <QList>
@@ -11,7 +12,6 @@
 #include <QReadWriteLock>
 #include <QDebug>
 #include <vector>
-#include "common.h"
 #include "tonegen.h"
 
 namespace Ui {
@@ -35,13 +35,15 @@ public:
     void AddNote(int x, int y);
     void CustomNote(int x, int y);
     void DeleteNote();
-    void AddBars(int numBars);
-    void DeleteBars(int numBars);
+
+    static void AddMeasures();
+    static void DeleteMeasures(int numMea);
 
     static QGraphicsScene* myScene;
+    static QObject* myParent;
     static int noteLength;
     static bool PianoInteract;
-
+    static int numBlocks;
 
 private:
     QString myStaffName;

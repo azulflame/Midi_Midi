@@ -1,6 +1,4 @@
-#include "mainwindow.h"
 #include <QApplication>
-#include "tonegen.h"
 #include "common.h"
 
 int main(int argc, char *argv[])
