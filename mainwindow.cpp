@@ -37,7 +37,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_pressed()
 {
-    /*
     if(q_timer != nullptr)
     {
         disconnect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
@@ -50,7 +49,7 @@ void MainWindow::on_pushButton_pressed()
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
     q_timer->start(16);
     main_timer = 0;
-    */
+
     isPlaying = !isPlaying;
     if(isPlaying)
     {
@@ -89,6 +88,7 @@ void MainWindow::play_song()
         }
 
         main_timer += 16;
+        qDebug() << q_timer;
 
         //Stop notes
         for(int x = (delete_queue.size() - 1); x >= 0; x--)
@@ -100,7 +100,7 @@ void MainWindow::play_song()
             }
         }
 
-        if(main_timer >= 1000000)
+        if(main_timer >= 100000000)
         {
             isPlaying = false;
         }

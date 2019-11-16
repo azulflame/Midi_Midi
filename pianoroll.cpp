@@ -90,13 +90,16 @@ void PianoRollStaff::AddMeasures(){
 }
 
 void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
-    GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, (this->x()*100000));
     //GlobalToneGenPntr->playTone(myMidiKey+57);*/ // added 57 because A4 is 0 on his scale
 
     if(!PianoInteract) return;
+
     if(event->buttons() == Qt::RightButton && myNote == true) DeleteNote();
     else if(event->buttons() == Qt::LeftButton && myNote == false)
+    {
+        GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, (this->x()*100000));
         AddNote(this->x(), this->y());
+    }
     update();
 }//plays note pertaining to grid area and adds note if notation mode is on
 
