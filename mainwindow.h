@@ -12,6 +12,8 @@
 #include <QKeyEvent>
 #include <QWidget>
 #include <QTimer>
+#include <QCloseEvent>
+#include <QMessageBox>
 #include <vector>
 #include "tonegen.h"
 #include "tone.h"
@@ -70,6 +72,8 @@ private slots:
     void on_checkBox_stateChanged(int arg1);
 
     void on_action_Measures_triggered();
+
+    virtual void closeEvent (QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;

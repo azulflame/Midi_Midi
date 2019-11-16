@@ -19,6 +19,7 @@ public:
     void removeTone(int toneToRemove);
     void playTone(int toneToPlay);
     void stopTone(int toneToStop);
+    bool killThread = false;
 
 };
 

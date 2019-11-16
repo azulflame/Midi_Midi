@@ -65,11 +65,10 @@ void MainWindow::on_pushButton_pressed()
 
 void MainWindow::play_song()
 {
-    qDebug() << main_timer;
     std::map<int, tone_vector>::iterator track_iterator;
 
     //Continue playing the song until play has stopped
-    for(unsigned long long int i = main_timer; i < (main_timer + 20); i++)
+    for(int i = main_timer; i < (main_timer + 19); i++)
     {
         //Play notes
         track_iterator = current_song.tracks.at(0).note_map.find(i);
@@ -77,7 +76,7 @@ void MainWindow::play_song()
         if(track_iterator != current_song.tracks.at(0).note_map.end())
         {
             //Play each note that exists at the current start time
-            for(unsigned long long int j = 0; j < current_song.tracks.at(0).note_map[main_timer].size(); j++)
+            for(int j = 0; j < current_song.tracks.at(0).note_map[main_timer].size(); j++)
             {
                 GlobalToneGenPntr->playTone(current_song.tracks.at(0).note_map[main_timer].at(j).value);
                 //Add to delete queue
@@ -238,4 +237,25 @@ void MainWindow::on_action_Measures_triggered()
     MAdder dialog;
     dialog.setModal(true);
     dialog.exec();
+}
+
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "MIDI_MIDI",
+                                                                tr("Are you sure?\n"),
+                                                                QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                                                                QMessageBox::Yes);
+    qDebug()<< GlobalToneGenPntr;
+    if (resBtn != QMessageBox::Yes) {
+        event->ignore();
+    } else {
+        GlobalToneGenPntr->killThread = true;
+        GlobalToneGenPntr->quit();
+        while(GlobalToneGenPntr->isRunning()) // wait for thread to kill itself
+        {
+            //do nothing
+        }
+        // then you may close the program
+        event->accept();
+    }
 }

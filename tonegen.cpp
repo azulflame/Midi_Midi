@@ -565,7 +565,7 @@ void ToneGen::run(){
 
     unsigned int debugSize = 0;
 
-    while (1)
+    while (!killThread)
         {
             // --- SOUND STUFF ---
 
