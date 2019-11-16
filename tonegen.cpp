@@ -299,7 +299,7 @@ namespace synth
             env.dAttackTime = 0.05;
             env.dDecayTime = 1.0;
             env.dSustainAmplitude = 0.95;
-            env.dReleaseTime = 1.5;
+            env.dReleaseTime = 0;
             fMaxLifeTime = -1.0;
             name = L"Harmonica";
             dVolume = 0.3;

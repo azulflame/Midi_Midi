@@ -48,6 +48,7 @@ void PianoRollStaff::DeleteNote(){
 
     //add what you need to delete note from song
 
+
     delete this;
 }
 
@@ -94,11 +95,26 @@ void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
 
     if(!PianoInteract) return;
 
-    if(event->buttons() == Qt::RightButton && myNote == true) DeleteNote();
+    if(event->buttons() == Qt::RightButton && myNote == true)
+    {
+        GlobalMainWindow->current_song.tracks.at(0).removeNote(myMidiKey+57, this->x());
+        DeleteNote();
+    }
     else if(event->buttons() == Qt::LeftButton && myNote == false)
     {
-        GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, (this->x()*100000));
+        int end_tick;
+
+        GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, this->x());
         AddNote(this->x(), this->y());
+
+        end_tick = (this->x() + (noteLength*20));
+        qDebug() << GlobalMainWindow->last_tick;
+        qDebug() << end_tick;
+
+        if(GlobalMainWindow->last_tick < end_tick)
+        {
+            GlobalMainWindow->last_tick = end_tick;
+        }
     }
     update();
 }//plays note pertaining to grid area and adds note if notation mode is on

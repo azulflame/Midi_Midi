@@ -45,8 +45,6 @@ void Track::removeNote(int desired_note, int start_time)
     else
     {
         note_map.at(start_time).erase(note_map.at(start_time).begin() + index);
-
-        /*UPDATE UI AS NEEDED HERE*/
     }
 
     return;

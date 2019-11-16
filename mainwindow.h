@@ -40,7 +40,8 @@ public:
     ToneGen toneGenerator;
     void start(QIODevice *device);
     QIODevice *device;
-    unsigned long long int main_timer;
+    int main_timer;
+    int last_tick = 0;
     Song current_song;
     bool isPlaying = false; //Whether or not playback is currently active.
     QTimer *q_timer = nullptr;
@@ -67,7 +68,6 @@ private slots:
     void on_actionWhole_triggered();
 
     void on_checkBox_stateChanged(int arg1);
-
 
     void on_action_Measures_triggered();
 

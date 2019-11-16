@@ -45,12 +45,18 @@ void MainWindow::on_pushButton_pressed()
     isPlaying = true;
     q_timer = nullptr;
 
+    //Clear all current sound
+    for(int x = (delete_queue.size() - 1); x >= 0; x--)
+    {
+        GlobalToneGenPntr->stopTone(delete_queue[x].value);
+        delete_queue.erase(delete_queue.begin() + x);
+    }
+
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
-    q_timer->start(16);
+    q_timer->start(160);
     main_timer = 0;
 
-    isPlaying = !isPlaying;
     if(isPlaying)
     {
         play_song();
@@ -59,50 +65,51 @@ void MainWindow::on_pushButton_pressed()
 
 void MainWindow::play_song()
 {
-    main_timer = 0;
+    qDebug() << main_timer;
     std::map<int, tone_vector>::iterator track_iterator;
 
     //Continue playing the song until play has stopped
-    while(isPlaying)
+    for(unsigned long long int i = main_timer; i < (main_timer + 20); i++)
     {
-        for(unsigned long long int i = main_timer; i < (main_timer + 15); i++)
+        //Play notes
+        track_iterator = current_song.tracks.at(0).note_map.find(i);
+
+        if(track_iterator != current_song.tracks.at(0).note_map.end())
         {
-            //Play notes
-            track_iterator = current_song.tracks.at(0).note_map.find(i);
-
-            if(track_iterator != current_song.tracks.at(0).note_map.end())
+            //Play each note that exists at the current start time
+            for(unsigned long long int j = 0; j < current_song.tracks.at(0).note_map[main_timer].size(); j++)
             {
-                //Play each note that exists at the current start time
-                for(unsigned long long int j = 0; j < current_song.tracks.at(0).note_map[main_timer].size(); j++)
-                {
-                    GlobalToneGenPntr->playTone(current_song.tracks.at(0).note_map[main_timer].at(j).value);
-                    //Add to delete queue
-                    MidiNote new_delete;
-                    new_delete.value = current_song.tracks.at(0).note_map[main_timer].at(j).value;
-                    new_delete.duration = (main_timer*10) + (current_song.tracks.at(0).note_map[main_timer].at(j).duration * 100000);
-                    delete_queue.push_back(new_delete);
-                }
-
-                //End notes that need to end
+                GlobalToneGenPntr->playTone(current_song.tracks.at(0).note_map[main_timer].at(j).value);
+                //Add to delete queue
+                MidiNote new_delete;
+                new_delete.value = current_song.tracks.at(0).note_map[main_timer].at(j).value;
+                new_delete.duration = main_timer + (current_song.tracks.at(0).note_map[main_timer].at(j).duration * 20);
+                delete_queue.push_back(new_delete);
             }
+
+            //End notes that need to end
         }
+    }
 
-        main_timer += 16;
-        qDebug() << q_timer;
+    //Stop notes
+    for(int x = (delete_queue.size() - 1); x >= 0; x--)
+    {
+        if(main_timer > delete_queue[x].duration)
+        {
+            GlobalToneGenPntr->stopTone(delete_queue[x].value);
+            delete_queue.erase(delete_queue.begin() + x);
+        }
+    }
 
-        //Stop notes
+    main_timer += 20;
+
+    if(main_timer > last_tick)
+    {
+        main_timer = 0;
         for(int x = (delete_queue.size() - 1); x >= 0; x--)
         {
-            if(main_timer > delete_queue[x].duration)
-            {
-                GlobalToneGenPntr->stopTone(delete_queue[x].value);
-                delete_queue.erase(delete_queue.begin() + x);
-            }
-        }
-
-        if(main_timer >= 100000000)
-        {
-            isPlaying = false;
+            GlobalToneGenPntr->stopTone(delete_queue[x].value);
+            delete_queue.erase(delete_queue.begin() + x);
         }
     }
 }
@@ -154,6 +161,11 @@ void MainWindow::on_pushButton_2_clicked()
 {
     if(isPlaying)
     {
+        for(int x = (delete_queue.size() - 1); x >= 0; x--)
+        {
+            GlobalToneGenPntr->stopTone(delete_queue[x].value);
+            delete_queue.erase(delete_queue.begin() + x);
+        }
         isPlaying = false;
         q_timer->stop();
     }
@@ -162,7 +174,6 @@ void MainWindow::on_pushButton_2_clicked()
         isPlaying = true;
         q_timer->start();
     }
-
 }
 
 void MainWindow::setToneGenPtr(ToneGen *CurrentToneGen){
