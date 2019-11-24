@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "audioconstants.h"
 #include "midinote.h"
+#include "filemanager.h"
 #include "notemap.h"
 #include <QKeyEvent>
 #include <QAudioDeviceInfo>
@@ -237,6 +238,17 @@ void MainWindow::on_action_Measures_triggered()
     MAdder dialog;
     dialog.setModal(true);
     dialog.exec();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    file_manager.save_file(current_song);
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    file_manager.load_file();
+    return;
 }
 
 void MainWindow::closeEvent (QCloseEvent *event)

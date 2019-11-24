@@ -21,6 +21,7 @@
 #include "notemap.h"
 #include "song.h"
 #include "madder.h"
+#include "filemanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -48,8 +49,10 @@ public:
     bool isPlaying = false; //Whether or not playback is currently active.
     QTimer *q_timer = nullptr;
     vector<MidiNote> delete_queue;
+    FileManager file_manager;
     //getTones();
     //play C Major
+    Ui::MainWindow *ui;
 
 
     void static setToneGenPtr(ToneGen *CurrentToneGen);
@@ -73,10 +76,13 @@ private slots:
 
     void on_action_Measures_triggered();
 
+    void on_actionSave_triggered();
+
+    void on_actionLoad_triggered();
+
     virtual void closeEvent (QCloseEvent *event);
 
 private:
-    Ui::MainWindow *ui;
     MAdder* madder;
     void keyPressEvent(QKeyEvent *event);
 };

@@ -43,6 +43,21 @@ void PianoRollStaff::AddNote(int x, int y){
     if(length > numBlocks) AddMeasures();
 }//creates a basic note based on selected input size
 
+
+void PianoRollStaff::LoadNote(int x, int y){
+    qDebug() << y;
+    PianoRollStaff *newNote;
+    newNote = new PianoRollStaff(nullptr, "" , false, true, false, y-57, 0, true);
+    int length = noteLength*20;
+    newNote->setSize(x,y,length,20);
+    myScene->addItem((QGraphicsItem*)newNote);
+
+    length = length/20;
+    x = x/20;
+    length = x + length;
+    if(length > numBlocks) AddMeasures();
+}//creates a basic note based on selected input size
+
 void PianoRollStaff::DeleteNote(){
     myScene->removeItem(this);
 

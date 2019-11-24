@@ -8,7 +8,7 @@ class FileManager
 public:
     FileManager();
     void save_file(Song current_song);
-    Song load_file();
+    void load_file();
     void export_file(Song current_song, std::string extension);
     Song import_file();
 

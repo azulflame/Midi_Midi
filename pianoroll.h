@@ -33,6 +33,7 @@ public:
     }
 
     void AddNote(int x, int y);
+    static void LoadNote(int x, int y);
     void CustomNote(int x, int y);
     void DeleteNote();
 
