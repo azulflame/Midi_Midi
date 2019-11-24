@@ -33,6 +33,7 @@ PianoRollStaff::PianoRollStaff(QObject* parent, QString staffName, bool isOpenSt
 void PianoRollStaff::AddNote(int x, int y){
     PianoRollStaff *newNote;
     newNote = new PianoRollStaff(this, myStaffName, false, true, false, myMidiKey, 0, true);
+    qDebug() << "MidiKey"<<myMidiKey <<  "y: "<<y ;
     int length = noteLength*20;
     newNote->setSize(x,y,length,20);
     myScene->addItem((QGraphicsItem*)newNote);
@@ -45,11 +46,12 @@ void PianoRollStaff::AddNote(int x, int y){
 
 
 void PianoRollStaff::LoadNote(int x, int y){
-    qDebug() << y;
     PianoRollStaff *newNote;
-    newNote = new PianoRollStaff(nullptr, "" , false, true, false, y-57, 0, true);
+    int yPos = 1900 -((y -13) * 20); // convert from midikey to yPos
+    newNote = new PianoRollStaff(myParent, "" , false, true, false, y-57, 0, true);
+    qDebug() << "y"<< y;
     int length = noteLength*20;
-    newNote->setSize(x,y,length,20);
+    newNote->setSize(x,yPos,length,20);
     myScene->addItem((QGraphicsItem*)newNote);
 
     length = length/20;

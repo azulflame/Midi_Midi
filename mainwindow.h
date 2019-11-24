@@ -53,6 +53,7 @@ public:
     //getTones();
     //play C Major
     Ui::MainWindow *ui;
+    void LoadNote(int x, int y);
 
 
     void static setToneGenPtr(ToneGen *CurrentToneGen);

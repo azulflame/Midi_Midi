@@ -81,7 +81,7 @@ void FileManager::load_file()
                 {
                     QStringList list = line.split(",");
                     qDebug() << "start: " <<list.at(0) << "value: "<< list.at(1) << "duration: " << list.at(2);
-                    //GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey, noteLength, this->x());
+                    GlobalMainWindow->current_song.tracks.at(0).addNote(list.at(1).toInt(), list.at(2).toInt(), list.at(0).toInt());
                     PianoRollStaff::LoadNote(list.at(0).toInt(), list.at(1).toInt());
                 }
             }
