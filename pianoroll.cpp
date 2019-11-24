@@ -45,12 +45,12 @@ void PianoRollStaff::AddNote(int x, int y){
 }//creates a basic note based on selected input size
 
 
-void PianoRollStaff::LoadNote(int x, int y){
+void PianoRollStaff::LoadNote(int x, int y, float z){
     PianoRollStaff *newNote;
     int yPos = 1900 -((y -13) * 20); // convert from midikey to yPos
     newNote = new PianoRollStaff(myParent, "" , false, true, false, y-57, 0, true);
     qDebug() << "y"<< y;
-    int length = noteLength*20;
+    float length = z*20;
     newNote->setSize(x,yPos,length,20);
     myScene->addItem((QGraphicsItem*)newNote);
 
@@ -67,6 +67,14 @@ void PianoRollStaff::DeleteNote(){
 
 
     delete this;
+}
+
+void PianoRollStaff::UnloadNote(){
+    PianoRollStaff *newUI;
+    newUI = new PianoRollStaff(nullptr, "", false, false, false, 0, 0, false);
+    myScene = ((QGraphicsScene*)newUI);
+
+    return;
 }
 
 void PianoRollStaff::CustomNote(int x, int y){

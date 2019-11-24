@@ -33,9 +33,10 @@ public:
     }
 
     void AddNote(int x, int y);
-    static void LoadNote(int x, int y);
+    static void LoadNote(int x, int y, float z);
     void CustomNote(int x, int y);
     void DeleteNote();
+    static void UnloadNote();
 
     static void AddMeasures();
     static void DeleteMeasures(int numMea);

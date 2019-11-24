@@ -3,11 +3,14 @@
 #include <map>
 #include <vector>
 #include <QFile>
+#include <QDialog>
 #include "song.h"
 #include "track.h"
 #include "midinote.h"
 #include "common.h"
 #include "pianoroll.h"
+#include <QFileDialog>
+#include <QTranslator>
 
 /* DISCLAIMER: I dont remember if we need an overloaded operator to set
    the current song equal to the songer returned, if we do i will take care of it
@@ -23,7 +26,8 @@ void FileManager::save_file(Song current_song)
     /* Save ya stuff in here */
     QString path = qApp->applicationDirPath()+"/projects";
     QDir dir;
-    QFile file(path + "/proj1.txt");
+    QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.txt", "MIDI_MIDI (*.smf);;All Files (*)");
+    QFile file(fileName);
     if(!dir.exists(path))
     {
         dir.mkpath(path);
@@ -36,6 +40,7 @@ void FileManager::save_file(Song current_song)
     }
 
     QTextStream fout(&file);
+    fout << GlobalMainWindow->last_tick << endl;
     //loop
     for(int i = 0; i <= GlobalMainWindow->last_tick; i+=20)
     {
@@ -66,7 +71,10 @@ void FileManager::load_file()
     Song song_data;
     QString path = qApp->applicationDirPath()+"/projects";
     QDir dir;
-    QFile file(path + "/proj1.txt");
+    QString fileName = QFileDialog::getOpenFileName(GlobalMainWindow,
+            "Load Song", "",
+            "MIDI_MIDI (*.smf);;All Files (*)");
+    QFile file(fileName);
     int i = 0;
 
     if(dir.exists(path))
@@ -74,16 +82,21 @@ void FileManager::load_file()
         if (file.open(QIODevice::ReadOnly))
         {
             QTextStream fin(&file);
+            PianoRollStaff::UnloadNote();
             while(!fin.atEnd())
             {
                 QString line = fin.readLine();
-                if(!(line.isNull()) && !(line[0] == '\n') && line.contains(','))
+                if(i == 0)
+                    GlobalMainWindow->last_tick = line.toInt();
+
+                else if(!(line.isNull()) && !(line[0] == '\n') && line.contains(',') && i != 0)
                 {
                     QStringList list = line.split(",");
                     qDebug() << "start: " <<list.at(0) << "value: "<< list.at(1) << "duration: " << list.at(2);
-                    GlobalMainWindow->current_song.tracks.at(0).addNote(list.at(1).toInt(), list.at(2).toInt(), list.at(0).toInt());
-                    PianoRollStaff::LoadNote(list.at(0).toInt(), list.at(1).toInt());
+                    GlobalMainWindow->current_song.tracks.at(0).addNote(list.at(1).toInt(), list.at(2).toFloat(), list.at(0).toInt());
+                    PianoRollStaff::LoadNote(list.at(0).toInt(), list.at(1).toInt(), list.at(2).toFloat());
                 }
+                i++;
             }
         }
     }
