@@ -3,10 +3,12 @@
 #include "common.h"
 //#include "ui_pianoroll.h"
 #include <vector>
+
 QGraphicsScene* PianoRollStaff::myScene;
 vector<PianoRollStaff*> PianoRollStaff::uiNoteVector;
-QMap<QString, int> PianoRoll::noteNames;
+QMap<int, QString> PianoRoll::noteNames;
 int PianoRollStaff::numBlocks = 96;
+bool PianoRollStaff::contextSwitch = false;
 QObject* PianoRollStaff::myParent;
 
 PianoRollStaff::PianoRollStaff(QObject* parent, QString staffName, bool isOpenStaff, bool isMyFirst,
@@ -31,27 +33,30 @@ PianoRollStaff::PianoRollStaff(QObject* parent, QString staffName, bool isOpenSt
     this->setAcceptHoverEvents(true);
 }
 
-void PianoRollStaff::AddNote(int x, int y){
+void PianoRollStaff::AddNote(){
     PianoRollStaff *newNote;
     newNote = new PianoRollStaff(this, myStaffName, false, true, false, myMidiKey, 0, true);
-    qDebug() << "MidiKey"<<myMidiKey <<  "y: "<<y ;
     int length = noteLength*20;
-    newNote->setSize(x,y,length,20);
+    newNote->setSize(this->x(),this->y(),length,20);
     myScene->addItem((QGraphicsItem*)newNote);
     uiNoteVector.push_back(newNote);
 
     length = length/20;
-    x = x/20;
+    int x = this->x()/20;
     length = x + length;
-    if(length > numBlocks) AddMeasures();
+    while(length > numBlocks) AddMeasures();
+    GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, this->x());
 }//creates a basic note based on selected input size
 
 
 void PianoRollStaff::LoadNote(int x, int y, float z){
     PianoRollStaff *newNote;
+    QString name;
    // uiNoteVector.push_back(newNote);
     int yPos = 1900 -((y -13) * 20); // convert from midikey to yPos
-    newNote = new PianoRollStaff(myParent, "" , false, true, false, y-57, 0, true);
+    if(PianoRoll::noteNames[y-57].contains("b")) name = "";
+    else name = PianoRoll::noteNames[y-57];
+    newNote = new PianoRollStaff(myParent, name, false, true, false, y-57, 0, true);
     qDebug() << "y"<< y;
     float length = z*20;
     newNote->setSize(x,yPos,length,20);
@@ -61,15 +66,11 @@ void PianoRollStaff::LoadNote(int x, int y, float z){
     length = length/20;
     x = x/20;
     length = x + length;
-    if(length > numBlocks) AddMeasures();
+    while(length > numBlocks) AddMeasures();
 }//creates a basic note based on selected input size
 
 void PianoRollStaff::DeleteNote(){
     myScene->removeItem(this);
-
-    //add what you need to delete note from song
-
-
     delete this;
 }
 
@@ -94,22 +95,33 @@ void PianoRollStaff::AddMeasures(){
     int loc;
     int curKey = 51;
     bool lastBlock;
+    bool firstBlock;
+    QString name;
 
     for(int i = 0; i < 16; i++){
         for(int j = 8; j > 0; j--){
             for(int k = 0; k < 6; k++){
+                if(i == 0) firstBlock = true;
+                else firstBlock = false;
+
                 if(i == 15) lastBlock = true;
                 else lastBlock = false;
 
+                if(PianoRoll::noteNames[curKey].contains("b")) name = "";
+                else name = PianoRoll::noteNames[curKey];
+
                 loc = l*20;
-                newLine = new PianoRollStaff(myParent, "", true, false, lastBlock, curKey);
+                newLine = new PianoRollStaff(myParent, name, true, firstBlock, lastBlock, curKey);
                 newLine->setSize(numBlocks*20, loc, 20, 20);
                 myScene->addItem((QGraphicsItem*)newLine);
                 l++;
                 curKey--;
 
+                if(PianoRoll::noteNames[curKey].contains("b")) name = "";
+                else name = PianoRoll::noteNames[curKey];
+
                 loc = l*20;
-                newLine = new PianoRollStaff(myParent, "", false, false, lastBlock, curKey);
+                newLine = new PianoRollStaff(myParent, name, false, firstBlock, lastBlock, curKey);
                 newLine->setSize(numBlocks*20, loc, 20, 20);
                 myScene->addItem((QGraphicsItem*)newLine);
                 l++;
@@ -122,22 +134,59 @@ void PianoRollStaff::AddMeasures(){
      }
 }
 
+void PianoRollStaff::contextMenuEvent(QGraphicsSceneContextMenuEvent *event){
+    if(contextSwitch){
+        contextSwitch = false;
+        return;
+     }
+    //if(!PianoInteract) return;
+    QMenu menu;
+
+    QAction action1("Add Measures", this);
+    connect(&action1, &QAction::triggered, [this]() {
+        MAdder dialog;
+        dialog.setModal(true);
+        dialog.exec();
+     });
+    menu.addAction(&action1);
+
+    QAction action2("Add Note", this);
+    connect(&action2, &QAction::triggered, [this]() {
+        NAdder dialog(nullptr, this);
+        dialog.setModal(true);
+        dialog.exec();
+     });
+    menu.addAction(&action2);
+
+    QAction action3("Add Tempo", this);
+    connect(&action3, &QAction::triggered, [this]() {
+        TAdder dialog;
+        dialog.setModal(true);
+        dialog.exec();
+     });
+    menu.addAction(&action3);
+
+    menu.exec(event->screenPos());
+}
+
 void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
     //GlobalToneGenPntr->playTone(myMidiKey+57);*/ // added 57 because A4 is 0 on his scale
 
+    if(event->buttons() == Qt::RightButton && myNote == false)
+        return;
     if(!PianoInteract) return;
 
     if(event->buttons() == Qt::RightButton && myNote == true)
     {
         GlobalMainWindow->current_song.tracks.at(0).removeNote(myMidiKey+57, this->x());
         DeleteNote();
+        contextSwitch = true;
     }
     else if(event->buttons() == Qt::LeftButton && myNote == false)
     {
         int end_tick;
 
-        GlobalMainWindow->current_song.tracks.at(0).addNote(myMidiKey+57, noteLength, this->x());
-        AddNote(this->x(), this->y());
+        AddNote();
 
         end_tick = (this->x() + (noteLength*20));
         qDebug() << GlobalMainWindow->last_tick;
@@ -165,7 +214,7 @@ void PianoRollStaff::paint(QPainter* painter, const QStyleOptionGraphicsItem*, Q
         else painter->setBrush(QColor("#8080ff"));
     }//changes color for block hovered on
     else if(isChecked){
-        painter->setBrush(Qt::blue);
+        painter->setBrush(QColor("#780000"));
     }//sets color for note
     else{
         if(isOpen){
@@ -179,7 +228,7 @@ void PianoRollStaff::paint(QPainter* painter, const QStyleOptionGraphicsItem*, Q
     painter->drawRect(rect());
     if(!myNote){
         if(isNewBar){
-            painter->setPen(Qt::red);
+            painter->setPen(QColor("#780000"));
             painter->drawLine(x + 20, y, 20, 20);
         }else{
             painter->setPen(Qt::blue);
@@ -213,30 +262,30 @@ PianoRoll::PianoRoll(QWidget* parent)
     for (int i = 8; i > 0; i--) {
         QString num = QString::number(i);
         QString firstC = QString::number(i+1);
+        noteNames.insert(curKey, "C"+firstC);
         addOpenStaff(scene, "C"+firstC);
-        noteNames.insert("C"+num, curKey);
+        noteNames.insert(curKey, "B"+num);
         addLineStaff(scene, "B"+num);
-        noteNames.insert("B"+num, curKey);
+        noteNames.insert(curKey, "Bb"+num);
         addOpenStaff(scene, "");//Bb
-        noteNames.insert("Bb"+num, curKey);
+        noteNames.insert(curKey, "A"+num);
         addLineStaff(scene, "A"+num);
-        noteNames.insert("A"+num, curKey);
+        noteNames.insert(curKey, "Ab"+num);
         addOpenStaff(scene, "");//Ab
-        noteNames.insert("Ab"+num, curKey);
+        noteNames.insert(curKey, "G"+num);
         addLineStaff(scene, "G"+num);
-        noteNames.insert("G"+num, curKey);
+        noteNames.insert(curKey, "Gb"+num);
         addOpenStaff(scene, "");//Gb
-        noteNames.insert("Gb"+num, curKey);
+        noteNames.insert(curKey, "F"+num);
         addLineStaff(scene, "F"+num);
-        noteNames.insert("F"+num, curKey);
+        noteNames.insert(curKey, "E"+num);
         addOpenStaff(scene, "E"+num);
-        noteNames.insert("E"+num, curKey);
+        noteNames.insert(curKey, "Eb"+num);
         addLineStaff(scene, "");//Eb
-        noteNames.insert("Eb"+num, curKey);
+        noteNames.insert(curKey, "D"+num);
         addOpenStaff(scene, "D"+num);
-        noteNames.insert("D"+num, curKey);
+        noteNames.insert(curKey, "Db"+num);
         addLineStaff(scene, "");//Db
-        noteNames.insert("Db", curKey);
     }//creates staffs and creates a map of note names with their key for Tongen
 
     PianoRollStaff::myScene = scene;
@@ -256,6 +305,7 @@ void PianoRoll::addOpenStaff(QGraphicsScene* scene, QString staffName)
             newLine = new PianoRollStaff(this, staffName, true, false, true, curKey, curO);
             j = 0;
         }
+        else if(i > 0 && j == 1) newLine = new PianoRollStaff(this, staffName, true, true, false, curKey, curC);
         else newLine = new PianoRollStaff(this, staffName, true, false, false, curKey, curO);
         newLine->setSize(i*20, loc, 20, 20);
         scene->addItem((QGraphicsItem*)newLine);
@@ -278,6 +328,7 @@ void PianoRoll::addLineStaff(QGraphicsScene* scene, QString staffName)
             newLine = new PianoRollStaff(this, staffName, false, false, true, curKey, curC);
             j = 0;
         }
+        else if(i > 0 && j == 1) newLine = new PianoRollStaff(this, staffName, false, true, false, curKey, curC);
         else newLine = new PianoRollStaff(this, staffName, false, false, false, curKey, curC);
         newLine->setSize(i*20, loc, 20, 20);
         scene->addItem((QGraphicsItem*)newLine);

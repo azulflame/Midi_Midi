@@ -21,6 +21,8 @@
 #include "notemap.h"
 #include "song.h"
 #include "madder.h"
+#include "tadder.h"
+#include "nadder.h"
 #include "filemanager.h"
 
 namespace Ui {

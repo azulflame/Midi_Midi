@@ -26,9 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     void start(QIODevice *device);
-
-
-
+    ui->mainToolBar->setStyleSheet("background-color: rgb(120, 0, 0);");
+    ui->pushButton->setCheckable(true);
 }
 
 MainWindow::~MainWindow()

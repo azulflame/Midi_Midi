@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsRectItem>
 #include <QPaintEvent>
 #include <QList>
@@ -11,6 +12,8 @@
 #include <QColor>
 #include <QReadWriteLock>
 #include <QDebug>
+#include <QAction>
+#include <QMenu>
 #include <vector>
 #include "tonegen.h"
 
@@ -32,7 +35,7 @@ public:
         this->setPos(x,y);
     }
 
-    void AddNote(int x, int y);
+    void AddNote();
     static void LoadNote(int x, int y, float z);
     void CustomNote(int x, int y);
     void DeleteNote();
@@ -60,6 +63,7 @@ private:
     bool myNote;
     int myMidiKey;
     int myIndex;
+    static bool contextSwitch;
 
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*);
@@ -76,6 +80,7 @@ protected:
         }
 
         void mousePressEvent(QGraphicsSceneMouseEvent* event);
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
         //void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 };
 
@@ -90,7 +95,7 @@ class PianoRoll : public QGraphicsView
 public:
     explicit PianoRoll(QWidget* parent = nullptr);
     virtual ~PianoRoll() {};
-    static QMap<QString, int> noteNames;
+    static QMap<int, QString> noteNames;
     //inline PianoRollStaff* staff(int num) { return staffs.value(num); }
 
 private:

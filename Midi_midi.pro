@@ -34,8 +34,10 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         midinote.cpp \
+        nadder.cpp \
         pianoroll.cpp \
         song.cpp \
+        tadder.cpp \
         tone.cpp \
         tonegen.cpp \
         track.cpp \
@@ -48,10 +50,12 @@ HEADERS += \
         madder.h \
         mainwindow.h \
         midinote.h \
+        nadder.h \
         notemap.h \
         olcnoisemaker.h \
         pianoroll.h \
         song.h \
+        tadder.h \
         tone.h \
         tonegen.h \
         track.h \
@@ -59,7 +63,9 @@ HEADERS += \
 
 FORMS += \
         madder.ui \
-        mainwindow.ui
+        mainwindow.ui \
+        nadder.ui \
+        tadder.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
