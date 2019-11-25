@@ -4,6 +4,7 @@
 //#include "ui_pianoroll.h"
 #include <vector>
 QGraphicsScene* PianoRollStaff::myScene;
+vector<PianoRollStaff*> PianoRollStaff::uiNoteVector;
 QMap<QString, int> PianoRoll::noteNames;
 int PianoRollStaff::numBlocks = 96;
 QObject* PianoRollStaff::myParent;
@@ -37,6 +38,7 @@ void PianoRollStaff::AddNote(int x, int y){
     int length = noteLength*20;
     newNote->setSize(x,y,length,20);
     myScene->addItem((QGraphicsItem*)newNote);
+    uiNoteVector.push_back(newNote);
 
     length = length/20;
     x = x/20;
@@ -47,12 +49,14 @@ void PianoRollStaff::AddNote(int x, int y){
 
 void PianoRollStaff::LoadNote(int x, int y, float z){
     PianoRollStaff *newNote;
+   // uiNoteVector.push_back(newNote);
     int yPos = 1900 -((y -13) * 20); // convert from midikey to yPos
     newNote = new PianoRollStaff(myParent, "" , false, true, false, y-57, 0, true);
     qDebug() << "y"<< y;
     float length = z*20;
     newNote->setSize(x,yPos,length,20);
     myScene->addItem((QGraphicsItem*)newNote);
+    uiNoteVector.push_back(newNote);
 
     length = length/20;
     x = x/20;
@@ -70,9 +74,12 @@ void PianoRollStaff::DeleteNote(){
 }
 
 void PianoRollStaff::UnloadNote(){
-    PianoRollStaff *newUI;
-    newUI = new PianoRollStaff(nullptr, "", false, false, false, 0, 0, false);
-    myScene = ((QGraphicsScene*)newUI);
+
+    for(int i = (uiNoteVector.size() - 1); i >= 0; i--)
+    {
+        myScene->removeItem((QGraphicsItem*)uiNoteVector.at(i));
+        uiNoteVector.erase(uiNoteVector.begin() + i);
+    }
 
     return;
 }

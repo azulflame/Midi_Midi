@@ -24,9 +24,9 @@ FileManager::FileManager()
 void FileManager::save_file(Song current_song)
 {
     /* Save ya stuff in here */
-    QString path = qApp->applicationDirPath()+"/projects";
+    QString path = qApp->applicationDirPath();
     QDir dir;
-    QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.txt", "MIDI_MIDI (*.smf);;All Files (*)");
+    QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.smf", "MIDI_MIDI (*.smf)");
     QFile file(fileName);
     if(!dir.exists(path))
     {
@@ -69,11 +69,11 @@ void FileManager::save_file(Song current_song)
 void FileManager::load_file()
 {
     Song song_data;
-    QString path = qApp->applicationDirPath()+"/projects";
+    QString path = qApp->applicationDirPath();
     QDir dir;
     QString fileName = QFileDialog::getOpenFileName(GlobalMainWindow,
-            "Load Song", "",
-            "MIDI_MIDI (*.smf);;All Files (*)");
+            "Load Song", path,
+            "MIDI_MIDI (*.smf)");
     QFile file(fileName);
     int i = 0;
 

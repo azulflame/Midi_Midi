@@ -42,6 +42,7 @@ public:
     static void DeleteMeasures(int numMea);
 
     static QGraphicsScene* myScene;
+    static vector<PianoRollStaff*> uiNoteVector;
     static QObject* myParent;
     static int noteLength;
     static bool PianoInteract;
