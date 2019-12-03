@@ -285,16 +285,16 @@ void MainWindow::on_relDial_3_sliderMoved(int position)//Release
 
 void MainWindow::on_atkDial_3_sliderMoved(int position)//Attack
 {
-   // gAttack = position *.01;
+    GlobalToneGenPntr->gAttack = position *0.01;
 }
 
 void MainWindow::on_susDial_3_sliderMoved(int position)//Sustain
 {
-   // gSustain = position*.01;
+    GlobalToneGenPntr->gSustain = position*0.01;
 }
 
 
 void MainWindow::on_decDial_3_sliderMoved(int position)//Decay
 {
-   // gDecay = position *.01;
+    GlobalToneGenPntr->gDecay = position *0.01;
 }
