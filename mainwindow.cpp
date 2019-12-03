@@ -55,7 +55,7 @@ void MainWindow::on_pushButton_pressed()
 
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
-    q_timer->start(60000 / (4 * TAdder::Tempo));
+    q_timer->start(60000 / (16 * TAdder::Tempo));
     main_timer = 0;
 
     if(isPlaying)
@@ -67,6 +67,16 @@ void MainWindow::on_pushButton_pressed()
 void MainWindow::play_song()
 {
     std::map<int, tone_vector>::iterator track_iterator;
+
+    //Stop notes
+    for(int x = (delete_queue.size() - 1); x >= 0; x--)
+    {
+        if(main_timer >= delete_queue[x].duration)
+        {
+            GlobalToneGenPntr->stopTone(delete_queue[x].value);
+            delete_queue.erase(delete_queue.begin() + x);
+        }
+    }
 
     //Continue playing the song until play has stopped
     for(int i = main_timer; i < (main_timer + 19); i++)
@@ -86,23 +96,10 @@ void MainWindow::play_song()
                 new_delete.duration = main_timer + (current_song.tracks.at(0).note_map[main_timer].at(j).duration * 20);
                 delete_queue.push_back(new_delete);
             }
-
-            //End notes that need to end
         }
     }
 
-    //Stop notes
-    for(int x = (delete_queue.size() - 1); x >= 0; x--)
-    {
-        if(main_timer > delete_queue[x].duration)
-        {
-            GlobalToneGenPntr->stopTone(delete_queue[x].value);
-            delete_queue.erase(delete_queue.begin() + x);
-        }
-    }
-
-    main_timer += 20;
-
+    main_timer += 5;
     if(main_timer > last_tick)
     {
         main_timer = 0;
