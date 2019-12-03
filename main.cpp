@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
     qDebug()  << GlobalToneGenPntr;
     GlobalMainWindow->show();       // show the main window
+    //GlobalMainWindow->showFullScreen();
 
 
     return a.exec();

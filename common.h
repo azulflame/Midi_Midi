@@ -8,4 +8,6 @@
 extern ToneGen* GlobalToneGenPntr;
 extern MainWindow* GlobalMainWindow;
 
+
+
 #endif // COMMON_H

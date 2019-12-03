@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     void start(QIODevice *device);
     ui->mainToolBar->setStyleSheet("background-color: rgb(120, 0, 0);");
     ui->pushButton->setCheckable(true);
+
 }
 
 MainWindow::~MainWindow()
@@ -271,4 +272,32 @@ void MainWindow::closeEvent (QCloseEvent *event)
     }
 }
 
+void MainWindow::actionCurrent_Synth_triggered(){
 
+
+}
+
+
+
+void MainWindow::on_relDial_3_sliderMoved(int position)//Release
+{
+    //gRelease = position ;
+    GlobalToneGenPntr->gRelease = position *0.01;
+    //qDebug() << GlobalToneGenPntr->gRelease ;
+}
+
+void MainWindow::on_atkDial_3_sliderMoved(int position)//Attack
+{
+   // gAttack = position *.01;
+}
+
+void MainWindow::on_susDial_3_sliderMoved(int position)//Sustain
+{
+   // gSustain = position*.01;
+}
+
+
+void MainWindow::on_decDial_3_sliderMoved(int position)//Decay
+{
+   // gDecay = position *.01;
+}
