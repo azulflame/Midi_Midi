@@ -55,7 +55,7 @@ void MainWindow::on_pushButton_pressed()
 
     q_timer = new QTimer(this);
     connect(q_timer, SIGNAL(timeout()), this, SLOT(play_song()));
-    q_timer->start(160);
+    q_timer->start(60000 / (4 * TAdder::Tempo));
     main_timer = 0;
 
     if(isPlaying)
