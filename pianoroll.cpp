@@ -189,8 +189,8 @@ void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
         AddNote();
 
         end_tick = (this->x() + (noteLength*20));
-        qDebug() << GlobalMainWindow->last_tick;
-        qDebug() << end_tick;
+        qDebug() << "Pianoroll last: " << GlobalMainWindow->last_tick;
+        qDebug() << "Pianoroll end: " << end_tick;
 
         if(GlobalMainWindow->last_tick < end_tick)
         {
