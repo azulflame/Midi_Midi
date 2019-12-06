@@ -247,6 +247,11 @@ void MainWindow::on_actionLoad_triggered()
     file_manager.load_file();
     return;
 }
+void MainWindow::on_actionImport_triggered()
+{
+    file_manager.import_file();
+    return;
+}
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {

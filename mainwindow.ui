@@ -342,6 +342,7 @@ color: rgb(0, 0, 0);</string>
     </property>
     <addaction name="actionSave"/>
     <addaction name="actionLoad"/>
+    <addaction name="actionImport"/>
    </widget>
    <widget class="QMenu" name="menu_Instrument">
     <property name="title">
@@ -455,6 +456,11 @@ color: rgb(0, 0, 0);</string>
   <action name="actionCurrent_Synth">
    <property name="text">
     <string>Current Synth</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import</string>
    </property>
   </action>
  </widget>

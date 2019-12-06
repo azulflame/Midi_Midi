@@ -11,6 +11,9 @@
 #include "pianoroll.h"
 #include <QFileDialog>
 #include <QTranslator>
+#include "Midi_import/MidiFile.h"
+#include <cmath>
+#include "tadder.h"
 
 /* DISCLAIMER: I dont remember if we need an overloaded operator to set
    the current song equal to the songer returned, if we do i will take care of it
@@ -83,6 +86,7 @@ void FileManager::load_file()
         {
             QTextStream fin(&file);
             PianoRollStaff::UnloadNote();
+            GlobalMainWindow->current_song.tracks[0].note_map.clear();
             while(!fin.atEnd())
             {
                 QString line = fin.readLine();
@@ -106,14 +110,56 @@ void FileManager::load_file()
 
     file.close();
 }
-void export_file(Song current_song, std::string extension)
-{
-    /* export ya data in here */
-}
-Song import_file()
+//void FileManager::export_file(Song current_song, std::string extension)
+//{
+//    /* export ya data in here */
+//}
+void FileManager::import_file()
 {
     Song song_data;
-    /* import ya data in here */
+    QString path = qApp->applicationDirPath();
+    QDir dir;
+    QString fileName = QFileDialog::getOpenFileName(GlobalMainWindow,
+            "Load Song", path,
+            "Midi (*.mid)");
+    QFile file(fileName);
+    int track;
+    int event;
 
-    return song_data;
+    float maxTick= 0;
+
+    if(dir.exists(path))
+    {
+        smf::MidiFile midfile;
+        midfile.read(fileName.toLocal8Bit().constData());
+        midfile.linkNotePairs();
+        PianoRollStaff::UnloadNote();
+        GlobalMainWindow->current_song.tracks[0].note_map.clear();
+        for(track = 0; track < midfile.size(); track++)
+        {
+            for(event = 0; event < midfile[track].size(); event++)
+            {
+                if(midfile[track][event].isNoteOn())
+                {
+                    if(midfile[track][event].isLinked())
+                    {
+                        int duration = (midfile[track][event].getTickDuration()*4)/(midfile.getTicksPerQuarterNote());
+                        int start = midfile[track][event].tick / midfile.getTicksPerQuarterNote();
+                        int key = midfile[track][event][1];
+                        if(maxTick < float(start*80 + duration))
+                        {
+                            maxTick = float(start*80) + duration;
+                        }
+                        GlobalMainWindow->current_song.tracks.at(0).addNote(key, duration, start*80);
+                        PianoRollStaff::LoadNote(start*80, key, duration);
+                    }
+                }
+            }
+        }
+
+    //qs.toLocal8Bit().constData();
+    /* import ya data in here */
+    GlobalMainWindow->last_tick = maxTick;
+    return;
+    }
 }
