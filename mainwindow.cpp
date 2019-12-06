@@ -252,6 +252,11 @@ void MainWindow::on_actionImport_triggered()
     file_manager.import_file();
     return;
 }
+void MainWindow::on_actionExport_triggered()
+{
+    file_manager.export_file();
+    return;
+}
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {

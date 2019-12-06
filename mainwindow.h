@@ -84,6 +84,7 @@ private slots:
 
     void on_actionLoad_triggered();
     void on_actionImport_triggered();
+    void on_actionExport_triggered();
 
     virtual void closeEvent (QCloseEvent *event);
 

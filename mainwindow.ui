@@ -343,36 +343,9 @@ color: rgb(0, 0, 0);</string>
     <addaction name="actionSave"/>
     <addaction name="actionLoad"/>
     <addaction name="actionImport"/>
-   </widget>
-   <widget class="QMenu" name="menu_Instrument">
-    <property name="title">
-     <string>&amp;Instrument</string>
-    </property>
-    <addaction name="actionCurrent_Synth"/>
-   </widget>
-   <widget class="QMenu" name="menu_Tool">
-    <property name="title">
-     <string>&amp;Tool</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menu_Window">
-    <property name="title">
-     <string>&amp;Window</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuT_empo">
-    <property name="title">
-     <string>&amp;Add</string>
-    </property>
-    <addaction name="action_Measures"/>
-    <addaction name="action_Tempo"/>
-    <addaction name="action_Notes"/>
+    <addaction name="actionExport"/>
    </widget>
    <addaction name="menu_File"/>
-   <addaction name="menu_Instrument"/>
-   <addaction name="menu_Tool"/>
-   <addaction name="menu_Window"/>
-   <addaction name="menuT_empo"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -461,6 +434,11 @@ color: rgb(0, 0, 0);</string>
   <action name="actionImport">
    <property name="text">
     <string>Import</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
    </property>
   </action>
  </widget>

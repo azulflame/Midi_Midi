@@ -71,6 +71,13 @@ void PianoRollStaff::LoadNote(int x, int y, float z){
 
 void PianoRollStaff::DeleteNote(){
     myScene->removeItem(this);
+    for(int i = (uiNoteVector.size() - 1); i >= 0; i--)
+    {
+        if(this == uiNoteVector.at(i))
+        {
+            uiNoteVector.erase(uiNoteVector.begin() + i);
+        }
+    }
     delete this;
 }
 

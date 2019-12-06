@@ -14,6 +14,7 @@
 #include "Midi_import/MidiFile.h"
 #include <cmath>
 #include "tadder.h"
+#include "pianoroll.h"
 
 /* DISCLAIMER: I dont remember if we need an overloaded operator to set
    the current song equal to the songer returned, if we do i will take care of it
@@ -29,6 +30,8 @@ void FileManager::save_file(Song current_song)
     /* Save ya stuff in here */
     QString path = qApp->applicationDirPath();
     QDir dir;
+    //::PianoInteract = false;
+    PianoRollStaff::UnloadNote();
     QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.smf", "MIDI_MIDI (*.smf)");
     QFile file(fileName);
     if(!dir.exists(path))
@@ -74,6 +77,8 @@ void FileManager::load_file()
     Song song_data;
     QString path = qApp->applicationDirPath();
     QDir dir;
+    //PianoRollStaff::PianoInteract = false;
+    PianoRollStaff::UnloadNote();
     QString fileName = QFileDialog::getOpenFileName(GlobalMainWindow,
             "Load Song", path,
             "MIDI_MIDI (*.smf)");
@@ -85,7 +90,7 @@ void FileManager::load_file()
         if (file.open(QIODevice::ReadOnly))
         {
             QTextStream fin(&file);
-            PianoRollStaff::UnloadNote();
+
             GlobalMainWindow->current_song.tracks[0].note_map.clear();
             while(!fin.atEnd())
             {
@@ -110,15 +115,63 @@ void FileManager::load_file()
 
     file.close();
 }
-//void FileManager::export_file(Song current_song, std::string extension)
-//{
-//    /* export ya data in here */
-//}
+void FileManager::export_file()
+{
+    QString path = qApp->applicationDirPath();
+    QDir dir;
+    //PianoRollStaff::PianoInteract = false;
+    PianoRollStaff::UnloadNote();
+    QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.mid", "MIDI_MIDI (*.mid)");
+    QFile file(fileName);
+    if(!dir.exists(path))
+    {
+        dir.mkpath(path);
+        qDebug() << "directory now exists";
+    }
+
+    //loop
+    smf::MidiFile mf;
+    for(int i = 0; i <= GlobalMainWindow->last_tick; i+=20)
+    {
+        std::map<int, tone_vector>::iterator track_iterator;
+
+        int track = 0;
+        int channel = 0;
+        //int instr = mf.addTimbre(track, 0, channel, 0);
+        int tpq = mf.getTPQ();
+        //Play notes
+        track_iterator = GlobalMainWindow->current_song.tracks.at(0).note_map.find(i);
+
+        if(track_iterator != GlobalMainWindow->current_song.tracks.at(0).note_map.end())
+        {
+
+            for(int j = 0; j < GlobalMainWindow->current_song.tracks[0].note_map.at(i).size(); j++)
+            {
+                int starttime = (i*mf.getTPQ()/20)/4; //start time
+                int key =  GlobalMainWindow->current_song.tracks[0].note_map.at(i)[j].value; //note
+                int endtime = starttime + (GlobalMainWindow->current_song.tracks[0].note_map.at(i)[j].duration * mf.getTPQ())/4; //length // might be mf.getTicksPerQuarterNote();
+                mf.addNoteOn(track, starttime, channel, key, 100);
+                mf.addNoteOff(track, endtime, channel, key);
+
+            }
+
+            mf.sortTracks();
+            mf.write(fileName.toLocal8Bit().constData());
+
+        }
+    }
+    qDebug() << "finished.";
+    qDebug() << "App path : " << path;
+    file.close();
+}
+
 void FileManager::import_file()
 {
     Song song_data;
     QString path = qApp->applicationDirPath();
     QDir dir;
+    //PianoRollStaff::PianoInteract = false;
+    //PianoRollStaff::UnloadNote();
     QString fileName = QFileDialog::getOpenFileName(GlobalMainWindow,
             "Load Song", path,
             "Midi (*.mid)");
@@ -149,6 +202,7 @@ void FileManager::import_file()
                         if(maxTick < float(start*80 + duration))
                         {
                             maxTick = float(start*80) + duration;
+                            qDebug() << maxTick;
                         }
                         GlobalMainWindow->current_song.tracks.at(0).addNote(key, duration, start*80);
                         PianoRollStaff::LoadNote(start*80, key, duration);
@@ -159,7 +213,7 @@ void FileManager::import_file()
 
     //qs.toLocal8Bit().constData();
     /* import ya data in here */
-    GlobalMainWindow->last_tick = maxTick;
+    GlobalMainWindow->last_tick = (maxTick + 80);
     return;
     }
 }
