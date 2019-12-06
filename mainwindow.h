@@ -59,6 +59,7 @@ public:
 
 
     void static setToneGenPtr(ToneGen *CurrentToneGen);
+    void actionCurrent_Synth_triggered();
 
 private slots:
     void on_pushButton_pressed(); //Temporary play button
@@ -82,8 +83,18 @@ private slots:
     void on_actionSave_triggered();
 
     void on_actionLoad_triggered();
+    void on_actionImport_triggered();
+    void on_actionExport_triggered();
 
     virtual void closeEvent (QCloseEvent *event);
+
+    void on_relDial_3_sliderMoved(int position);
+
+    void on_atkDial_3_sliderMoved(int position);
+
+    void on_susDial_3_sliderMoved(int position);
+
+    void on_decDial_3_sliderMoved(int position);
 
 private:
     MAdder* madder;

@@ -28,6 +28,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        Midi_import/Binasc.cpp \
+        Midi_import/MidiEvent.cpp \
+        Midi_import/MidiEventList.cpp \
+        Midi_import/MidiFile.cpp \
+        Midi_import/MidiMessage.cpp \
         common.cpp \
         filemanager.cpp \
         madder.cpp \
@@ -44,6 +49,11 @@ SOURCES += \
         virtualpiano.cpp
 
 HEADERS += \
+        Midi_import/Binasc.h \
+        Midi_import/MidiEvent.h \
+        Midi_import/MidiEventList.h \
+        Midi_import/MidiFile.h \
+        Midi_import/MidiMessage.h \
         audioconstants.h \
         common.h \
         filemanager.h \

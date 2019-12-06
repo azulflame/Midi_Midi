@@ -80,6 +80,10 @@ namespace synth
         FTYPE on;	// Time note was activated
         FTYPE off;	// Time note was deactivated
         bool active;
+        double nAttack ;
+        double nSustain;
+        double nRelease;
+        double nDecay;
         instrument_base *channel;
 
         note()
@@ -89,6 +93,10 @@ namespace synth
             off = 0.0;
             active = false;
             channel = nullptr;
+            nAttack = 0.01 ;
+            nSustain = 1.0;
+            nRelease = 0.1;
+            nDecay = 0.1;
         }
 
         //bool operator==(const note& n1, const note& n2) { return n1.id == n2.id; }
@@ -165,7 +173,7 @@ namespace synth
     struct envelope_adsr : public envelope
     {
         FTYPE dAttackTime;
-        FTYPE dDecayTime;
+        FTYPE dDecayTime ;
         FTYPE dSustainAmplitude;
         FTYPE dReleaseTime;
         FTYPE dStartAmplitude;
@@ -296,10 +304,10 @@ namespace synth
     {
         instrument_harmonica()
         {
-            env.dAttackTime = 0.05;
-            env.dDecayTime = 1.0;
-            env.dSustainAmplitude = 0.95;
-            env.dReleaseTime = 0;
+            env.dAttackTime = 0.1 ;
+            env.dDecayTime = 0.1;
+            env.dSustainAmplitude = 1.0;
+            env.dReleaseTime = 7.00;
             fMaxLifeTime = -1.0;
             name = L"Harmonica";
             dVolume = 0.3;
@@ -603,6 +611,12 @@ void ToneGen::run(){
                             n.id = k + 64;
                             n.on = dTimeNow;
                             n.active = true;
+
+                            //instHarm.env.dDecayTime = gDecay;
+                           // instHarm.env.dAttackTime = gAttack;
+                           /// instHarm.env.dReleaseTime = gRelease;
+                            //instHarm.env.dSustainAmplitude = gSustain;
+                            qDebug() << instHarm.env.dReleaseTime;
                             n.channel = &instHarm;
 
                             // Add note to vector
@@ -646,12 +660,7 @@ void ToneGen::run(){
 
 
                     auto noteFound = find_if(vecNotes.begin(), vecNotes.end(), [&thisFreq](synth::note const& item) { return item.id == thisFreq  && item.channel == &instHarm; });
-//                    //int noteFound = -1;
-//                    for(int i = 0; i < vecNotes.size(); i++)
-//                    {
-//                        if(vecNotes[i].id == thisFreq)
-//                            noteFound = thisFreq;
-//                    }
+
 
                     if (noteFound == vecNotes.end()) // note is not playing but is in tone vector
                     {
@@ -668,7 +677,14 @@ void ToneGen::run(){
                             n.id = thisFreq;
                             n.on = dTimeNow;
                             n.active = true;
+
+                            instHarm.env.dDecayTime = gDecay;
+                            instHarm.env.dAttackTime = gAttack;
+                            instHarm.env.dReleaseTime = gRelease;
+                            instHarm.env.dSustainAmplitude = gSustain;
+                            //qDebug() << instHarm.env.dReleaseTime;
                             n.channel = &instHarm;
+
 
                             // Add note to vector
                             vecNotes.emplace_back(n);

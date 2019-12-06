@@ -71,6 +71,13 @@ void PianoRollStaff::LoadNote(int x, int y, float z){
 
 void PianoRollStaff::DeleteNote(){
     myScene->removeItem(this);
+    for(int i = (uiNoteVector.size() - 1); i >= 0; i--)
+    {
+        if(this == uiNoteVector.at(i))
+        {
+            uiNoteVector.erase(uiNoteVector.begin() + i);
+        }
+    }
     delete this;
 }
 
@@ -189,8 +196,8 @@ void PianoRollStaff::mousePressEvent(QGraphicsSceneMouseEvent *event){
         AddNote();
 
         end_tick = (this->x() + (noteLength*20));
-        qDebug() << GlobalMainWindow->last_tick;
-        qDebug() << end_tick;
+        qDebug() << "Pianoroll last: " << GlobalMainWindow->last_tick;
+        qDebug() << "Pianoroll end: " << end_tick;
 
         if(GlobalMainWindow->last_tick < end_tick)
         {

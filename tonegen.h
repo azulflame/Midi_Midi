@@ -3,6 +3,12 @@
 #include <QtCore>
 #include "olcnoisemaker.h"
 #include "tone.h"
+#include <QDebug>
+
+
+
+
+
 
 class ToneGen : public QThread
 {
@@ -20,6 +26,11 @@ public:
     void playTone(int toneToPlay);
     void stopTone(int toneToStop);
     bool killThread = false;
+    double gAttack  = 0.1;
+    double gSustain = 1.0;
+    double gRelease = .1;
+    double gDecay = .1;
+
 
 };
 

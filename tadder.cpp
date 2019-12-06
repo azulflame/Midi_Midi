@@ -8,6 +8,7 @@ TAdder::TAdder(QWidget *parent, PianoRollStaff *block) :
 {
     ui->setupUi(this);
     myPiano = block;
+    ui->spinBox->setRange(1, 999);
 }
 
 TAdder::~TAdder()

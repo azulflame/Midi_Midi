@@ -23,6 +23,7 @@
  */
 
 #include "virtualpiano.h"
+#include "common.h"
 
 VirtualPianoKey::VirtualPianoKey(QObject* parent, int midiKey, QString noteName, bool isBlackKey)
     : QObject(parent), QGraphicsRectItem(nullptr)
@@ -44,12 +45,14 @@ void VirtualPianoKey::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
     isClicking = true;
     this->update();
-    //tonegen.playKey(myMidiKey);
+    GlobalToneGenPntr->addTone(myMidiKey+57);
+    GlobalToneGenPntr->playTone(myMidiKey+57);
 }
 void VirtualPianoKey::mouseReleaseEvent(QGraphicsSceneMouseEvent*)
 {
     isClicking = false;
     this->update();
+    GlobalToneGenPntr->stopTone(myMidiKey+57);
 }
 
 void VirtualPianoKey::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
@@ -100,32 +103,23 @@ VirtualPiano::VirtualPiano(QWidget* parent)
 
     k = 0;
     curKey = 51;
-
-    for (int i = 0; i < 9; i++) {
+    for (int i = 8; i > 0; i--) {
         QString num = QString::number(i);
-        addWhiteKey(scene, "C"+num);
-        addBlackKey(scene, "C#"); // or Db
-        addWhiteKey(scene, "D"+num);
-        addBlackKey(scene, "D#"); // or Eb
-        addWhiteKey(scene, "E"+num);
-        addWhiteKey(scene, "F"+num);
-        addBlackKey(scene, "F#"); // or Gb
+        QString firstC = QString::number(i+1);
+        addWhiteKey(scene, "C"+firstC);
+        addWhiteKey(scene, "B"+num); // or Db
+        addBlackKey(scene, "Bb");
+        addWhiteKey(scene, "A"+num); // or Eb
+        addBlackKey(scene, "Ab");
         addWhiteKey(scene, "G"+num);
-        addBlackKey(scene, "G#"); // or Ab
-        addWhiteKey(scene, "A"+num);
-        addBlackKey(scene, "A#"); // or Bb
-        addWhiteKey(scene, "B"+num);
+        addBlackKey(scene, "Gb"); // or Gb
+        addWhiteKey(scene, "F"+num);
+        addWhiteKey(scene, "E"+num); // or Ab
+        addBlackKey(scene, "Eb");
+        addWhiteKey(scene, "D"+num); // or Bb
+        addBlackKey(scene, "Db");
     }
-    QString num = QString::number(9);
-    // The last octave has 4 less keys.
-    addWhiteKey(scene, "C"+num);
-    addBlackKey(scene, "C#"); // or Db
-    addWhiteKey(scene, "D"+num);
-    addBlackKey(scene, "D#"); // or Eb
-    addWhiteKey(scene, "E"+num);
-    addWhiteKey(scene, "F"+num);
-    addBlackKey(scene, "F#"); // or Gb
-    addWhiteKey(scene, "G"+num);
+
 }
 
 void VirtualPiano::addWhiteKey(QGraphicsScene* scene, QString noteName)
@@ -136,7 +130,7 @@ void VirtualPiano::addWhiteKey(QGraphicsScene* scene, QString noteName)
     scene->addItem((QGraphicsItem*)newKey);
     keys.insert(curKey, newKey);
     k += 1;
-    curKey += 1;
+    curKey -= 1;
 }
 
 void VirtualPiano::addBlackKey(QGraphicsScene* scene, QString noteName)
@@ -146,5 +140,5 @@ void VirtualPiano::addBlackKey(QGraphicsScene* scene, QString noteName)
     newKey->setSize(0, loc, 40, 10);
     scene->addItem((QGraphicsItem*)newKey);
     keys.insert(curKey, newKey);
-    curKey += 1;
+    curKey -= 1;
 }
