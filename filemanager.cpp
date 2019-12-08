@@ -31,7 +31,7 @@ void FileManager::save_file(Song current_song)
     QString path = qApp->applicationDirPath();
     QDir dir;
     //::PianoInteract = false;
-    PianoRollStaff::UnloadNote();
+    //PianoRollStaff::UnloadNote();
     QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.smf", "MIDI_MIDI (*.smf)");
     QFile file(fileName);
     if(!dir.exists(path))
@@ -120,7 +120,7 @@ void FileManager::export_file()
     QString path = qApp->applicationDirPath();
     QDir dir;
     //PianoRollStaff::PianoInteract = false;
-    PianoRollStaff::UnloadNote();
+
     QString fileName = QFileDialog::getSaveFileName(GlobalMainWindow, "Save Song", path+"/untitled.mid", "MIDI_MIDI (*.mid)");
     QFile file(fileName);
     if(!dir.exists(path))
